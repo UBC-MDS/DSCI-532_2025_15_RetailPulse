@@ -7,6 +7,7 @@ As a **data analytics team**, we are creating this dashboard for **retail operat
 Currently, managers rely on **basic tools like Excel** and spend excessive time **manually analyzing** sales data across different countries, products, and time periods. This makes it difficult to efficiently identify **market trends, optimize inventory, and improve customer retention strategies**.  
 
 Our interactive dashboard will provide **real-time insights** on:
+
 - **Geographical sales distribution** (identifying top-performing countries and continents)
 - **Revenue trends over time** (detecting seasonal patterns)
 - **Customer retention metrics** (understanding repeat buyers)
@@ -56,7 +57,7 @@ The dataset consists of **5,000 retail transactions** with the following key att
 To enhance analysis, we will create new features such as:
 ✅ **TotalSales** (Revenue per transaction)  
 ✅ **Repeat Customer Flag** (Tracking customer retention)  
-✅ **Sales Per Country** (Aggregating sales by location)  
+✅ **Sales Per Country** (Aggregating sales by location)
 ✅ **Product Category Revenue Contribution** (Using ML model to categorize products)  
 ✅ **Continental Revenue Summary** (Grouping sales at the continent level)  
 
@@ -83,7 +84,7 @@ To enhance analysis, we will create new features such as:
 
 5. **Which product categories generate the most revenue?**  
    - 📊 **Chart**: **Word Cloud with Tooltip** displaying **top revenue-generating categories**  
-   - 🎯 **Benefit**: Guides **inventory expansion decisions** based on **high-performing product categories**.  
+   - 🎯 **Benefit**: Guides **inventory expansion decisions** based on **high-performing product categories**.
    - 🛠 **Method**: Uses a **pre-trained ML model** to categorize products based on descriptions.  
 
 ---
@@ -124,4 +125,3 @@ To enhance analysis, we will create new features such as:
 - Dropdown filters for **time selection & product segmentation**
 
 ---
-
