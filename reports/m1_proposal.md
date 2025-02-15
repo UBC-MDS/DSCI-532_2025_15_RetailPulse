@@ -7,11 +7,12 @@ As a **data analytics team**, we are creating this dashboard for **retail operat
 Currently, managers rely on **basic tools like Excel** and spend excessive time **manually analyzing** sales data across different countries, products, and time periods. This makes it difficult to efficiently identify **market trends, optimize inventory, and improve customer retention strategies**.  
 
 Our interactive dashboard will provide **real-time insights** on:
-- **Geographical sales distribution** (identifying top-performing countries)
+
+- **Geographical sales distribution** (identifying top-performing countries and continents)
 - **Revenue trends over time** (detecting seasonal patterns)
 - **Customer retention metrics** (understanding repeat buyers)
 - **Product performance** (highlighting top-selling and high-revenue products)
-- **Product categories contributing to revenue** (to guide inventory decisions)
+- **Product categories contributing to revenue** (using ML-based categorization)
 
 Through **intuitive visualizations**, our dashboard will enable managers to make **faster, data-driven decisions**, helping them **maximize profits, optimize stock levels, and refine marketing efforts**.  
 
@@ -56,16 +57,17 @@ The dataset consists of **5,000 retail transactions** with the following key att
 To enhance analysis, we will create new features such as:
 ✅ **TotalSales** (Revenue per transaction)  
 ✅ **Repeat Customer Flag** (Tracking customer retention)  
-✅ **Sales Per Country** (Aggregating sales by location)  
-✅ **Product Category Revenue Contribution** (Grouping products by category)  
+✅ **Sales Per Country** (Aggregating sales by location)
+✅ **Product Category Revenue Contribution** (Using ML model to categorize products)  
+✅ **Continental Revenue Summary** (Grouping sales at the continent level)  
 
 ---
 
 ## **3. Research Questions & Usage Scenarios**  
 
 ### **Key Questions We Aim to Answer**  
-1. **How many customers/sales do we have in each country?**  
-   - 📊 **Chart**: **Interactive Map** showing **customer/sales count per country**  
+1. **How many customers/sales do we have in each country and continent?**  
+   - 📊 **Chart**: **Interactive Map** allowing users to filter by **continent and country**  
    - 🎯 **Benefit**: Identifies **high-performing regions** and helps in **targeted marketing & expansion strategies**.  
 
 2. **What is the total revenue generated in the past few months?**  
@@ -82,39 +84,44 @@ To enhance analysis, we will create new features such as:
 
 5. **Which product categories generate the most revenue?**  
    - 📊 **Chart**: **Word Cloud with Tooltip** displaying **top revenue-generating categories**  
-   - 🎯 **Benefit**: Guides **inventory expansion decisions** based on **high-performing product categories**.  
-
-### **Usage Scenario**  
-📌 **Persona**: Long Nyugen, a retail operations manager, needs to track sales performance and optimize inventory for multiple regions.  
-
-🔍 **Goals & Tasks:**  
-- Identify **top-performing products** and understand **customer demand trends**.  
-- Compare **sales across different countries** to optimize **regional marketing strategies**.  
-- Track **repeat customers** and explore opportunities for loyalty programs.  
-- Ensure **inventory is aligned with sales trends** to reduce overstocking or shortages.  
-
-🛠️ **How the Dashboard Helps:**  
-- Long logs into the dashboard and **views total revenue trends** in an interactive **line chart**.  
-- He filters sales data by **country and time period** to **identify key markets**.   
-- He checks the **customer retention panel** to see which customers **purchase frequently**.  
-- He downloads **a report with sales insights** to share with the marketing team.   
-
-🎯 **Outcome**:  
-Long can now **quickly assess sales patterns**, leading to **better inventory planning, targeted promotions, and improved customer retention strategies**.  
+   - 🎯 **Benefit**: Guides **inventory expansion decisions** based on **high-performing product categories**.
+   - 🛠 **Method**: Uses a **pre-trained ML model** to categorize products based on descriptions.  
 
 ---
 
-## **4. User Persona**  
+## **4. App Sketch & Brief Description**  
 
-| Attribute | Details |
-|-----------|---------|
-| **Name** | Long Nyugen |
-| **Age** | 27 |
-| **Job Title** | Retail Operations Manager |
-| **Industry** | Consumer Goods / Retail |
-| **Experience Level** | Mid-Senior Level |
-| **Tools Familiarity** | Excel, Power BI, basic dashboards – but relies on visual tools for quick insights |
-| **Primary Goal** | Drive sales growth, optimize product inventory, expand market reach, create a marketing strategy |
+### **Dashboard Sketch**  
+![Dashboard Sketch](img/sketch.png)  
+
+### **App Components & Interactions**  
+1️⃣ **Summary Boards**
+   - Displays **Revenue, Number of Customers, and Returning Customers (Last 30 Days)**
+   - 📊 Provides a quick overview of business performance
+
+2️⃣ **Total Revenue Panel**
+   - **Line Chart**: Shows **revenue trends** over time
+   - 📌 Helps identify **seasonality & revenue growth**
+
+3️⃣ **Product Performance Panel**
+   - **Bar Chart**: Displays **Top 5 Products by Revenue**
+   - 📌 Includes a **dropdown filter** for different time periods
+
+4️⃣ **Customer Retention Panel**
+   - **Line Chart**: Tracks **repeat customer trends**
+   - 📌 Key for understanding **customer loyalty**
+
+5️⃣ **Geographical Sales Panel**
+   - **Interactive Map**: Allows **continent & country selection**
+   - 📌 Shows **regional sales summaries** and market reach
+
+6️⃣ **Product Category Analysis Panel**
+   - **Word Cloud**: Highlights **top-selling categories**
+   - 📌 Uses **ML-based categorization** to map descriptions to categories
+
+🚀 **User Actions:**
+- Users can **hover over charts** for detailed insights
+- The **map allows clicking on continents** to view **country-wise statistics**
+- Dropdown filters for **time selection & product segmentation**
 
 ---
-
