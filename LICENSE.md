@@ -4,7 +4,7 @@
 
 Copyright (c) 2025
 
-This report (source contained in the [`DSCI-532_2025_15_RetailPulse` repository](https://github.com/UBC-MDS/DSCI-532_2025_15_RetailPulse)) is made available under the **Attribution-NonCommercial-ShareAlike 4.0 International** ([CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/)). 
+This report (source contained in the [`DSCI-532_2025_15_RetailPulse repository`](https://github.com/UBC-MDS/DSCI-532_2025_15_RetailPulse)) is made available under the **Attribution-NonCommercial-ShareAlike 4.0 International** ([CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/)). 
 
 This is a human-readable summary of (and not a substitute for) the [license](https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode).
 
