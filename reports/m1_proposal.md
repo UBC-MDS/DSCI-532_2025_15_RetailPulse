@@ -95,8 +95,7 @@ To enhance analysis, we will create new features such as:
 
 🛠️ **How the Dashboard Helps:**  
 - Long logs into the dashboard and **views total revenue trends** in an interactive **line chart**.  
-- He filters sales data by **country and time period** to **identify key markets**.  
-- Using a **heatmap**, he spots **seasonal spikes** in sales.  
+- He filters sales data by **country and time period** to **identify key markets**.   
 - He checks the **customer retention panel** to see which customers **purchase frequently**.  
 - He downloads **a report with sales insights** to share with the marketing team.  
 
