@@ -25,6 +25,6 @@ The **RetailPulse software code** contained in this project is licensed under th
 The **project report** is licensed under the **Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0)** License. See the license file for details. If reusing any part of this code or report, please provide proper attribution by linking to this repository.
 
 ## **References**
-- Dataset Source: [To be added]
+- [Dataset Source](https://doi.org/10.24432/C5BW33)
 - Documentation: [Dash](https://dash.plotly.com/), [Plotly](https://plotly.com/python/), [Pandas](https://pandas.pydata.org/)
 
