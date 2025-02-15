@@ -92,7 +92,7 @@ To enhance analysis, we will create new features such as:
 ## **4. App Sketch & Brief Description**  
 
 ### **Dashboard Sketch**  
-![Dashboard Sketch](img/sketch.png)  
+![Dashboard Sketch](../img/sketch.png)  
 
 ### **App Components & Interactions**  
 1️⃣ **Summary Boards**
