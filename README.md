@@ -20,7 +20,7 @@ The dashboard is built using **Python, Dash, and Plotly**, ensuring an **intuiti
 
 
 ## **License**
-The **RetailPulse software code** contained in this project is licensed under the **MIT License**. See the [LICENSE](https://github.com/UBC-MDS/DSCI-532_2025_15_RetailPulse/blob/main/LICENSE) file for more details.
+The **RetailPulse software code** contained in this project is licensed under the **MIT License**. See the [LICENSE](https://github.com/UBC-MDS/DSCI-532_2025_15_RetailPulse/blob/main/LICENSE.md) file for more details.
 
 The **project report** is licensed under the **Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0)** License. See the license file for details. If reusing any part of this code or report, please provide proper attribution by linking to this repository.
 
