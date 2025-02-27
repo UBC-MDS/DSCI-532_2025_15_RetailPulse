@@ -1,51 +1,39 @@
 import dash
+import dash_bootstrap_components as dbc
 from dash import dcc, html
-import plotly.express as px
-import pandas as pd
+from components.general import dashboard_title, metric_toggle, retention_slider
+from callbacks.charts import register_callbacks
+
+from components.map_card import map_card
+from components.revenue_trends_card import revenue_trends_card
+from components.customer_retention_card import customer_retention_card
+
 
 # Initialize Dash app
-app = dash.Dash(__name__)
+app = dash.Dash(__name__, external_stylesheets=[dbc.themes.BOOTSTRAP])
 
-# Sample dataset (Replace this with actual data processing logic)
-df = pd.DataFrame({
-    "Date": pd.date_range(start="2021-01-01", periods=5, freq='M'),
-    "Revenue": [4000, 4500, 5000, 5200, 5400]
-})
+# Layout
+app.layout = dbc.Container(fluid=True, children=[
 
-# Basic revenue trend line chart
-fig_revenue = px.line(df, x="Date", y="Revenue", title="Revenue Over Time")
+    # Title
+    dashboard_title(),
 
-# Layout of the app
-app.layout = html.Div([
-    html.H1("RetailPulse Dashboard", style={'textAlign': 'center'}),
-    
-    # Summary Board
-    html.Div([
-        html.Div([
-            html.H3("Revenue (Last 30 Days)"),
-            html.H2("$5,113", style={"color": "green"}),
-            html.P("▲ 3.67%")
-        ], style={"display": "inline-block", "width": "30%", "padding": "10px", "border": "1px solid #ddd"}),
+    # Full-width Geographical Map in a Card
+    map_card(),
 
-        html.Div([
-            html.H3("Number of Customers (Last 30 Days)"),
-            html.H2("90", style={"color": "green"}),
-            html.P("▲ 50%")
-        ], style={"display": "inline-block", "width": "30%", "padding": "10px", "border": "1px solid #ddd"}),
+    # Row for Side-by-Side Charts
+    dbc.Row([
+        # Revenue Trends Card
+        dbc.Col(revenue_trends_card(), width=6),
 
-        html.Div([
-            html.H3("Total Returning Customers (Last 30 Days)"),
-            html.H2("60", style={"color": "green"})
-        ], style={"display": "inline-block", "width": "30%", "padding": "10px", "border": "1px solid #ddd"})
-    ], style={"textAlign": "center", "marginBottom": "20px"}),
-    
-    # Revenue Chart
-    dcc.Graph(figure=fig_revenue),
-    
-    # Placeholder for future components
-    html.Div("More charts and interactivity will be added here...", style={"textAlign": "center", "marginTop": "20px"})
+        # Customer Retention Card
+        dbc.Col(customer_retention_card(), width=6)
+
+    ], className="align-items-stretch")  # Forces equal height for both cards
 ])
 
-# Run the app
-if __name__ == "__main__":
-    app.run_server(debug=True)
+# Register Callbacks
+register_callbacks(app)
+
+if __name__ == '__main__':
+    app.run_server(debug=True, threaded=True)
