@@ -48,7 +48,7 @@ The dataset consists of 5,000 retail transactions with the following key attribu
 
 #### **Purchase Details**  
 - Quantity: Number of units purchased in a transaction  
-- Derived Variable: TotalSales = Quantity × UnitPrice (Total purchase value)  
+- Derived Variable: Revenue = Quantity × UnitPrice (Total purchase value)  
 
 #### **Customer & Location Information**  
 - CustomerID: Unique identifier for customers (some transactions lack this value)  
@@ -57,7 +57,7 @@ The dataset consists of 5,000 retail transactions with the following key attribu
 ### **Derived Variables**  
 To enhance analysis, we will create new features such as:
 
-- TotalSales (Revenue per transaction)
+- Revenue (Revenue per transaction)
 - Repeat Customer Flag (Tracking customer retention)
 - Sales Per Country (Aggregating sales by location)
 - Product Category Revenue Contribution (Using ML model to categorize products)
