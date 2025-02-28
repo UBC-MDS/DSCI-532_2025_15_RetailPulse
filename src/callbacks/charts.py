@@ -1,7 +1,7 @@
 import pandas as pd
 from dash import Input, Output
 import plotly.express as px
-from data.data import get_monthly_customer_retention, get_revenue_trends, get_country_sales, get_data
+from src.data.data import get_monthly_customer_retention, get_revenue_trends, get_country_sales, get_data
 
 
 df = get_data()

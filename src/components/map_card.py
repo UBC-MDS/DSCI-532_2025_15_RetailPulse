@@ -1,7 +1,7 @@
 import dash_bootstrap_components as dbc
 from dash import dcc
 
-from components.general import metric_toggle
+from src.components.general import metric_toggle
 
 def map_card():
     return dbc.Card(

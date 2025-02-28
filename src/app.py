@@ -1,12 +1,12 @@
 import dash
 import dash_bootstrap_components as dbc
 from dash import dcc, html
-from components.general import dashboard_title, metric_toggle, retention_slider
-from callbacks.charts import register_callbacks
+from src.components.general import dashboard_title, metric_toggle, retention_slider
+from src.callbacks.charts import register_callbacks
 
-from components.map_card import map_card
-from components.revenue_trends_card import revenue_trends_card
-from components.customer_retention_card import customer_retention_card
+from src.components.map_card import map_card
+from src.components.revenue_trends_card import revenue_trends_card
+from src.components.customer_retention_card import customer_retention_card
 
 import sys
 import os

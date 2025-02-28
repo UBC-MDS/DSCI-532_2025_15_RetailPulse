@@ -1,7 +1,7 @@
 import dash_bootstrap_components as dbc
 from dash import dcc
 
-from components.general import retention_slider
+from src.components.general import retention_slider
 
 def customer_retention_card():
     return dbc.Card(
