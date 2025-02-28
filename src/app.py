@@ -8,6 +8,10 @@ from components.map_card import map_card
 from components.revenue_trends_card import revenue_trends_card
 from components.customer_retention_card import customer_retention_card
 
+import sys
+import os
+
+sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
 # Initialize Dash app
 app = dash.Dash(__name__, external_stylesheets=[dbc.themes.BOOTSTRAP])
