@@ -52,3 +52,10 @@ def get_monthly_customer_retention(no_months):
     monthly_retention.rename(columns={'Month_current': 'Month'}, inplace=True)
 
     return monthly_retention
+
+def get_product_revenue():
+    df['Revenue'] = df['Quantity'] * df['UnitPrice']
+    # Group by product and sum the revenue
+    df_grouped = df.groupby('Description', as_index=False)['Revenue'].sum()
+    df_grouped = df_grouped.sort_values(by='Revenue', ascending=False)
+    return df_grouped
