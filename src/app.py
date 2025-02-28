@@ -7,6 +7,7 @@ from callbacks.charts import register_callbacks
 from components.map_card import map_card
 from components.revenue_trends_card import revenue_trends_card
 from components.customer_retention_card import customer_retention_card
+from components.product_revenue_card import product_revenue_card
 
 
 # Initialize Dash app
@@ -18,8 +19,15 @@ app.layout = dbc.Container(fluid=True, children=[
     # Title
     dashboard_title(),
 
-    # Full-width Geographical Map in a Card
-    map_card(),
+    # Row for Side-by-Side Charts
+    dbc.Row([
+        # Map Card
+        dbc.Col(map_card(), width=6),
+
+        # Product Revenue Card
+        dbc.Col(product_revenue_card(), width=6)
+
+    ], className="align-items-stretch"),  # Forces equal height for both cards
 
     # Row for Side-by-Side Charts
     dbc.Row([
