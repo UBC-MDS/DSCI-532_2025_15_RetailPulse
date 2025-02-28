@@ -105,4 +105,17 @@ def register_callbacks(app):
             labels={'Revenue': 'Revenue ($)', 'InvoiceDate': 'Date'}
         )
         fig.update_traces(mode='lines+markers', marker=dict(size=8, symbol='circle'))
+        
+        return fig 
+    
+    @app.callback(
+        Output('plot', 'figure'),
+        Input('toggle-metric', 'value')
+    )
+    def create_bar_graph(metric):
+        fig =px.bar(revenue_trends,
+                    x= 'Revenue',
+                    y= 'InvoiceDate',
+                    title="Product Revenue"
+                    )
         return fig
