@@ -11,6 +11,7 @@ from components.customer_retention_card import customer_retention_card
 
 # Initialize Dash app
 app = dash.Dash(__name__, external_stylesheets=[dbc.themes.BOOTSTRAP])
+server = app.server
 
 # Layout
 app.layout = dbc.Container(fluid=True, children=[
@@ -36,4 +37,4 @@ app.layout = dbc.Container(fluid=True, children=[
 register_callbacks(app)
 
 if __name__ == '__main__':
-    app.run_server(debug=True, threaded=True)
+    app.run_server()

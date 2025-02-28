@@ -3,7 +3,7 @@ import dash_bootstrap_components as dbc
 
 # Sales dashboard title
 def dashboard_title():
-    return html.H1("Retail Pulse", className="text-center text-primary")
+    return html.H1("Retail Pulsess", className="text-center text-primary")
 
 # Metric toggle radio buttons
 def metric_toggle():
