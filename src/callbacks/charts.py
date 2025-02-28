@@ -1,13 +1,14 @@
 import pandas as pd
 from dash import Input, Output
 import plotly.express as px
-from data.data import get_monthly_customer_retention, get_revenue_trends, get_country_sales, get_data
+from data.data import get_monthly_customer_retention, get_revenue_trends, get_country_sales, get_data, get_product_revenue
 
 
 df = get_data()
 revenue_trends = get_revenue_trends()
 monthly_retention = get_monthly_customer_retention(6)
 country_sales = get_country_sales()
+product_revenue = get_product_revenue()
 
 
 def register_callbacks(app):
@@ -105,4 +106,24 @@ def register_callbacks(app):
             labels={'Revenue': 'Revenue ($)', 'InvoiceDate': 'Date'}
         )
         fig.update_traces(mode='lines+markers', marker=dict(size=8, symbol='circle'))
+        return fig
+
+
+
+    @app.callback(
+        Output('revenue-by-product', 'figure'),
+        Input('toggle-metric', 'value')
+    )
+    def create_revenue_by_product(metric):
+        top_product_revenue = product_revenue.sort_values(by='Revenue', ascending=False).head(10)
+        
+        fig = px.bar(
+            top_product_revenue,
+            x='Revenue',
+            y='Description',
+            orientation='h',
+            title='Revenue by Product',
+            labels={'Revenue': 'Revenue ($)', 'Description': 'Product'}
+        )
+        fig.update_layout(yaxis={'categoryorder':'total descending'})
         return fig
