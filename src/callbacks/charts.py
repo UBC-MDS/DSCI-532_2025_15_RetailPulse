@@ -137,7 +137,7 @@ def register_callbacks(app):
     
         fig = alt.Chart(top_product_revenue, width='container', height='container').mark_bar().encode(
             x=alt.X('Revenue:Q', title='Revenue ($)'),
-            y=alt.Y('Description:N', sort='-x', title='Product'),  # Sort by Revenue in descending order
+            y=alt.Y('Description:N', sort='-x', title='Product', axis=alt.Axis(labelAngle=0)),  # Sort by Revenue in descending order
             tooltip=[
                 alt.Tooltip('Description', title='Quantity (#):'),
                 alt.Tooltip('Revenue:Q', title='Revenue ($):', format="$.2f") 
