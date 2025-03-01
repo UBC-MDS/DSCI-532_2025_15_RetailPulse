@@ -8,6 +8,17 @@ df = pd.read_csv(file_path)
 df['Revenue'] = df['Quantity'] * df['UnitPrice']
 df['InvoiceDate'] = pd.to_datetime(df['InvoiceDate'])
 
+# Extract Year and Month Name
+df['Month_Label'] = df['InvoiceDate'].dt.strftime('%Y - %B') 
+df['Month_Value'] = df['InvoiceDate'].dt.strftime('%Y-%m')  # Format: "YYYY-MM" (for filtering)
+
+# Get unique month values for dropdown (sorted in descending order)
+month_options = (
+    df[['Month_Label', 'Month_Value']]
+    .drop_duplicates()
+    .sort_values('Month_Value', ascending=False)  # Most recent first
+    .to_dict(orient="records")
+)
 
 def get_data():
     return df
@@ -70,3 +81,19 @@ def get_summary_metrics():
         "total_orders": total_orders,
         "total_customers": total_customers
     }
+  
+def get_monthly_sales_data(selected_month):
+    """Returns the quantity sold per category for a given month."""
+    df['InvoiceDate'] = pd.to_datetime(df['InvoiceDate'])
+    
+    df['Month'] = df['InvoiceDate'].dt.strftime('%Y-%m') 
+    filtered_df = df[df['Month'] == selected_month]
+
+    monthly_sales = filtered_df.groupby('Category', as_index=False)['Quantity'].sum()
+    monthly_sales = monthly_sales.sort_values(by="Quantity", ascending=False)
+    
+    return monthly_sales
+
+def get_month_options():
+    """Returns available months for the dropdown."""
+    return month_options
