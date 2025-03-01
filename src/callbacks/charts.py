@@ -111,7 +111,10 @@ def register_callbacks(app):
         fig = alt.Chart(revenue_trends.head(num_months), width='container', height='container').mark_line(point=True).encode(
             x=alt.X('InvoiceDate:T', title='Date', axis=alt.Axis(format='%b %Y')),  # Format dates
             y=alt.Y('Revenue:Q', title='Revenue ($)'),
-            tooltip=['InvoiceDate', 'Revenue']
+            tooltip=[
+                alt.Tooltip('InvoiceDate:T', title='Date', format='%b %Y'),
+                alt.Tooltip('Revenue:Q', title='Revenue ($)', format="$.2f") 
+            ]
         ).properties(
             title='Monthly Revenue Trends'
         ).configure_axis(
