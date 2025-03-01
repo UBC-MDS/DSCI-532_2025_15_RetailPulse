@@ -87,9 +87,9 @@ def register_callbacks(app):
             filtered_retention['Month'] = filtered_retention['Month'].astype(str)
 
         fig = alt.Chart(filtered_retention, width='container', height='container').mark_line(point=True).encode(
-            x=alt.X('Month:N', title='Month', sort=None), 
-            y=alt.Y('CustomerID:Q', title='Returning Customers'),
-            tooltip=['Month', 'CustomerID']
+            x=alt.X('Month:N', title='Month', sort=None, axis=alt.Axis(labelAngle=45)), 
+            y=alt.Y('Count:Q', title='Returning Customers'),
+            tooltip=['Month', 'Count']
         ).properties(
             title=f'Returning Customers by Month (Last {num_months} Months)',
         ).configure_axis(
@@ -112,8 +112,8 @@ def register_callbacks(app):
             x=alt.X('InvoiceDate:T', title='Date', axis=alt.Axis(format='%b %Y')),  # Format dates
             y=alt.Y('Revenue:Q', title='Revenue ($)'),
             tooltip=[
-                alt.Tooltip('InvoiceDate:T', title='Date', format='%b %Y'),
-                alt.Tooltip('Revenue:Q', title='Revenue ($)', format="$.2f") 
+                alt.Tooltip('InvoiceDate:T', title='Date:', format='%b %Y'),
+                alt.Tooltip('Revenue:Q', title='Revenue ($):', format="$.2f") 
             ]
         ).properties(
             title='Monthly Revenue Trends'
