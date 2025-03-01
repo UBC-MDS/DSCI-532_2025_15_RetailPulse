@@ -93,9 +93,8 @@ def register_callbacks(app):
         ).properties(
             title=f'Returning Customers by Month (Last {num_months} Months)',
         ).configure_axis(
-            labelFontSize=16,
-            titleFontSize=20,
-            labelAngle=-45
+            labelFontSize=14,
+            titleFontSize=16
         ).configure_title(
             fontSize=20
         )
@@ -116,8 +115,8 @@ def register_callbacks(app):
         ).properties(
             title='Monthly Revenue Trends'
         ).configure_axis(
-            labelFontSize=16,
-            titleFontSize=20
+            labelFontSize=14,
+            titleFontSize=16
         ).configure_title(
             fontSize=20
         )
@@ -138,8 +137,8 @@ def register_callbacks(app):
             y=alt.Y('Description:N', sort='-x', title='Product'),  # Sort by Revenue in descending order
             tooltip=['Description', 'Revenue']
         ).configure_axis(
-            labelFontSize=16,
-            titleFontSize=20
+            labelFontSize=14,
+            titleFontSize=16
         ).configure_title(
             fontSize=20
         ).properties(
@@ -149,7 +148,7 @@ def register_callbacks(app):
         return (fig.to_dict())
     
     @app.callback(
-        Output("monthly-sales-bar-chart", "figure"),
+        Output("monthly-sales-bar-chart", "spec"),
         [Input("month-dropdown", "value")]
     )
     def update_monthly_sales_chart(selected_month):
@@ -157,17 +156,17 @@ def register_callbacks(app):
         df_filtered = get_monthly_sales_data(selected_month)
 
         # Create bar chart
-        fig = px.bar(df_filtered, 
-                     x="Quantity", 
-                     y="Category", 
-                     orientation="h",
-                     title=f"Quantity Sold per Category - {selected_month}")
-
-        fig.update_layout(
-            yaxis={'categoryorder': 'total ascending'},
-            xaxis_title="Quantity Sold",
-            yaxis_title="Category",
-            paper_bgcolor="white"
+        chart = alt.Chart(df_filtered, width='container', height='container').mark_bar().encode(
+            x=alt.X("Quantity", title="Quantity Sold"),
+            y=alt.Y("Category", sort="-x", title="Category")
+        ).configure_axis(
+            labelFontSize=14,
+            titleFontSize=16
+        ).configure_title(
+            fontSize=20
+        ).properties(
+            title=f"Quantity Sold per Category - {selected_month}",
+            background="white"
         )
 
-        return fig
+        return chart.to_dict()
