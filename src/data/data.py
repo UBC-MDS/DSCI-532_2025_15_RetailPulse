@@ -59,7 +59,7 @@ def get_monthly_customer_retention(no_months):
     )
     
     monthly_retention = returning_customers.groupby('Month_current').agg({'CustomerID': 'nunique'}).reset_index()
-    monthly_retention.rename(columns={'Month_current': 'Month'}, inplace=True)
+    monthly_retention.rename(columns={'Month_current': 'Month', 'CustomerID': 'Count'}, inplace=True)
 
     return monthly_retention
 

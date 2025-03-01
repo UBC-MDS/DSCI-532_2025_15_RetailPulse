@@ -9,7 +9,6 @@ from components.map_card import map_card
 from components.revenue_trends_card import revenue_trends_card
 from components.customer_retention_card import customer_retention_card
 from components.product_revenue_card import product_revenue_card
-from components.dhruv_card import dhruv_card
 from components.footer import footer
 from components.header import dashboard_title
 from components.summary_metrics import summary_metrics
