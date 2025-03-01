@@ -15,7 +15,6 @@ def get_data():
 def get_country_sales():
     # Aggregate by country
     country_sales = df.groupby('Country', as_index=False).agg({'Revenue': 'sum', 'Quantity': 'sum'})
-
     # Load country coordinates for mapping
     geo_data = px.data.gapminder()[['country', 'iso_alpha']].drop_duplicates()
     all_countries = pd.DataFrame({'Country': geo_data['country'], 'iso_alpha': geo_data['iso_alpha']})
@@ -59,3 +58,15 @@ def get_product_revenue():
     df_grouped = df.groupby('Description', as_index=False)['Revenue'].sum()
     df_grouped = df_grouped.sort_values(by='Revenue', ascending=False)
     return df_grouped
+
+def get_summary_metrics():
+    """Returns total revenue, total orders, and unique customers"""
+    total_revenue = df["Revenue"].sum()
+    total_orders = df["Quantity"].sum()
+    total_customers = df["CustomerID"].nunique()  # Count unique customers
+
+    return {
+        "total_revenue": total_revenue,
+        "total_orders": total_orders,
+        "total_customers": total_customers
+    }

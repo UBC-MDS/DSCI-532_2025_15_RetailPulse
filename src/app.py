@@ -12,7 +12,7 @@ from components.product_revenue_card import product_revenue_card
 from components.dhruv_card import dhruv_card
 from components.footer import footer
 from components.header import dashboard_title
-
+from components.summary_metrics import summary_metrics
 
 # Initialize Dash app
 app = dash.Dash(__name__, external_stylesheets=[dbc.themes.BOOTSTRAP])
@@ -23,7 +23,8 @@ app.layout = dbc.Container(fluid=True, children=[
 
     # Title
     dashboard_title(),
-
+    
+    summary_metrics(),
     dbc.Row([
         dbc.Col(product_revenue_card(), width=12)
     ], className="mb-4"),  # Adds margin below the row
