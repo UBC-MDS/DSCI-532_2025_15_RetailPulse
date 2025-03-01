@@ -138,7 +138,10 @@ def register_callbacks(app):
         fig = alt.Chart(top_product_revenue, width='container', height='container').mark_bar().encode(
             x=alt.X('Revenue:Q', title='Revenue ($)'),
             y=alt.Y('Description:N', sort='-x', title='Product'),  # Sort by Revenue in descending order
-            tooltip=['Description', 'Revenue']
+            tooltip=[
+                alt.Tooltip('Description', title='Quantity (#):'),
+                alt.Tooltip('Revenue:Q', title='Revenue ($):', format="$.2f") 
+            ]
         ).configure_axis(
             labelFontSize=14,
             titleFontSize=16
@@ -161,7 +164,11 @@ def register_callbacks(app):
         # Create bar chart
         chart = alt.Chart(df_filtered, width='container', height='container').mark_bar().encode(
             x=alt.X("Quantity", title="Quantity Sold"),
-            y=alt.Y("Category", sort="-x", title="Category")
+            y=alt.Y("Category", sort="-x", title="Category"),
+            tooltip=[
+                alt.Tooltip('Quantity:Q', title='Quantity (#):'),
+                alt.Tooltip('Category', title='Category:') 
+            ]
         ).configure_axis(
             labelFontSize=14,
             titleFontSize=16
