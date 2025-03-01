@@ -1,6 +1,5 @@
 import dash
 import dash_bootstrap_components as dbc
-from components.general import dashboard_title
 from callbacks.charts import register_callbacks
 
 from components.map_card import map_card
