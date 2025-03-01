@@ -93,19 +93,27 @@ def register_callbacks(app):
         return fig
 
     @app.callback(
-        Output('revenue-trends', 'figure'),
+        Output('revenue-trends', 'spec'),
         Input('toggle-metric', 'value')
     )
+
     def create_revenue_trends(metric):
-        fig = px.line(
-            revenue_trends,
-            x='InvoiceDate',
-            y='Revenue',
+        fig = alt.Chart(revenue_trends, width='container', height='container').mark_line(point=True).encode(
+            x=alt.X('InvoiceDate:T', title='Date', axis=alt.Axis(format='%b %Y')),  # Format dates
+            y=alt.Y('Revenue:Q', title='Revenue ($)'),
+            tooltip=['InvoiceDate', 'Revenue']
+        ).properties(
             title='Monthly Revenue Trends',
-            labels={'Revenue': 'Revenue ($)', 'InvoiceDate': 'Date'}
+            width="container",
+            height="container"
+        ).configure_axis(
+            labelFontSize=16,
+            titleFontSize=20
+        ).configure_title(
+            fontSize=20
         )
-        fig.update_traces(mode='lines+markers', marker=dict(size=8, symbol='circle'))
-        return fig
+        
+        return fig.to_dict()
 
 
 
