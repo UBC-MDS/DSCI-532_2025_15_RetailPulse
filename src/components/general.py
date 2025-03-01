@@ -11,8 +11,8 @@ def metric_toggle():
         dbc.Col(dcc.RadioItems(
             id='toggle-metric', 
             options=[
-                {'label': 'Quantity', 'value': 'Quantity'},
-                {'label': 'Revenue', 'value': 'Revenue'}
+                {'label': html.Span("Quantity", style={'marginRight': '15px'}), 'value': 'Quantity'},
+                {'label': html.Span("Revenue", style={'marginRight': '15px'}), 'value': 'Revenue'}
             ],
             value='Quantity',
             inline=True,
