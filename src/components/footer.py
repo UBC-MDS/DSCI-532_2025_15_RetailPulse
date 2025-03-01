@@ -25,7 +25,7 @@ def footer():
                     width=4
                 ),
                 dbc.Col(    
-                    html.P("Last Deployment: February 29, 2025",
+                    html.P("Last Deployment: March 01, 2025",
                            style={"textAlign": "right", "color": "white"}),
                     width=4            
                 )
