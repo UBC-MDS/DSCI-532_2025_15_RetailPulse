@@ -1,6 +1,5 @@
 import dash
 import dash_bootstrap_components as dbc
-from dash import dcc, html
 from components.general import dashboard_title
 from callbacks.charts import register_callbacks
 
@@ -9,9 +8,13 @@ from components.revenue_trends_card import revenue_trends_card
 from components.customer_retention_card import customer_retention_card
 from components.product_revenue_card import product_revenue_card
 from components.dhruv_card import dhruv_card
+from components.footer import footer
+from components.header import dashboard_title
+
 
 # Initialize Dash app
 app = dash.Dash(__name__, external_stylesheets=[dbc.themes.BOOTSTRAP])
+server = app.server
 
 # Layout
 app.layout = dbc.Container(fluid=True, children=[
@@ -34,7 +37,9 @@ app.layout = dbc.Container(fluid=True, children=[
             map_card(),
             dhruv_card()
         ], width=6)
-    ], className="align-items-stretch")
+    ], className="align-items-stretch"),
+
+    footer()
 ])
 
 # Register Callbacks
