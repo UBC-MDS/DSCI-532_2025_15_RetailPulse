@@ -2,9 +2,9 @@ import pandas as pd
 import plotly.express as px
 
 # Load sales data
-file_path = "data/raw/online_retail.xlsx" 
+file_path = "data/processed/sample.csv" 
 
-df = pd.read_excel(file_path)
+df = pd.read_csv(file_path)
 df['Revenue'] = df['Quantity'] * df['UnitPrice']
 df['InvoiceDate'] = pd.to_datetime(df['InvoiceDate'])
 
