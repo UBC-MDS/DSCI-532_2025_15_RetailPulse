@@ -1,14 +1,14 @@
 import dash
 import dash_bootstrap_components as dbc
-from src.callbacks.charts import register_callbacks
+from callbacks.charts import register_callbacks
 
-from src.components.map_card import map_card
-from src.components.revenue_trends_card import revenue_trends_card
-from src.components.customer_retention_card import customer_retention_card
-from src.components.product_revenue_card import product_revenue_card
-from src.components.dhruv_card import dhruv_card
-from src.components.footer import footer
-from src.components.header import dashboard_title
+from components.map_card import map_card
+from components.revenue_trends_card import revenue_trends_card
+from components.customer_retention_card import customer_retention_card
+from components.product_revenue_card import product_revenue_card
+from components.dhruv_card import dhruv_card
+from components.footer import footer
+from components.header import dashboard_title
 
 
 # Initialize Dash app
@@ -45,4 +45,4 @@ app.layout = dbc.Container(fluid=True, children=[
 register_callbacks(app)
 
 if __name__ == '__main__':
-    app.run_server(debug=False, threaded=True)
+    app.run_server(debug=False)
