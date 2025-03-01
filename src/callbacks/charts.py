@@ -24,7 +24,7 @@ def register_callbacks(app):
             locations='iso_alpha',
             color=metric,
             hover_name='Country',
-            title='Geographical Sales Distribution',
+            title='🌍 Geographical Sales Distribution',
             color_continuous_scale=px.colors.sequential.Viridis,
             projection='mercator',
             custom_data=['Country', 'Revenue', 'Quantity']
@@ -33,12 +33,11 @@ def register_callbacks(app):
         # Resize map
         fig.update_layout(
             autosize=False,
-            margin=dict(l=0, r=0, b=0, t=0, pad=4, autoexpand=True),
-            width=800,
+            margin=dict(l=0, r=0, b=0, t=50, pad=4, autoexpand=True),
+            width=700,
             height=400
         )
 
-        
 
         fig.update_geos(lataxis_range=[-20, 90])
 
@@ -115,7 +114,7 @@ def register_callbacks(app):
         Input('toggle-metric', 'value')
     )
     def create_revenue_by_product(metric):
-        top_product_revenue = product_revenue.sort_values(by='Revenue', ascending=False).head(10)
+        top_product_revenue = product_revenue.head(10)
         
         fig = px.bar(
             top_product_revenue,
@@ -125,5 +124,5 @@ def register_callbacks(app):
             title='Revenue by Product',
             labels={'Revenue': 'Revenue ($)', 'Description': 'Product'}
         )
-        fig.update_layout(yaxis={'categoryorder':'total descending'})
+        fig.update_layout(yaxis={'categoryorder':'total ascending'})
         return fig
