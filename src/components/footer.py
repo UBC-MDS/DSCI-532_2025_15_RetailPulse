@@ -5,7 +5,7 @@ def footer():
     return dbc.Card(
         dbc.CardBody([
             html.P(
-                "RetailPulse - A real-time retail analytics tool providing insights into market trends.",
+                "RetailPulse - A real-time retail analytics tool providing insights into store operations.",
                 className="text-center",
                 style={"fontSize": "1.5vw", "color": "white", "marginBottom": "1px"}
             ),
