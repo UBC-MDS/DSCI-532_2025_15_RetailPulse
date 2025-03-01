@@ -1,5 +1,8 @@
 import dash
 import dash_bootstrap_components as dbc
+import os
+import sys
+sys.path.insert(0, os.path.abspath(os.path.dirname(__file__)))
 from callbacks.charts import register_callbacks
 
 from components.map_card import map_card
