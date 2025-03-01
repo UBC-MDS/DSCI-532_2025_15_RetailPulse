@@ -127,9 +127,10 @@ def register_callbacks(app):
 
 
     @app.callback(
-        Output('revenue-by-product', 'spec')
+        Output('revenue-by-product', 'spec'),
+        Input('toggle-metric', 'value')
     )
-    def create_revenue_by_product():
+    def create_revenue_by_product(metric):
         top_product_revenue = product_revenue.nlargest(10, 'Revenue')
     
         fig = alt.Chart(top_product_revenue, width='container', height='container').mark_bar().encode(
