@@ -1,7 +1,7 @@
 import pandas as pd
 from dash import Input, Output
 import plotly.express as px
-from data.data import get_monthly_customer_retention, get_revenue_trends, get_country_sales, get_data, get_product_revenue
+from data.data import get_monthly_customer_retention, get_revenue_trends, get_country_sales, get_data, get_product_revenue, get_monthly_sales_data
 import altair as alt
 
 df = get_data()
@@ -147,3 +147,27 @@ def register_callbacks(app):
         )
         
         return (fig.to_dict())
+    
+    @app.callback(
+        Output("monthly-sales-bar-chart", "figure"),
+        [Input("month-dropdown", "value")]
+    )
+    def update_monthly_sales_chart(selected_month):
+        # Get filtered data from data.py
+        df_filtered = get_monthly_sales_data(selected_month)
+
+        # Create bar chart
+        fig = px.bar(df_filtered, 
+                     x="Quantity", 
+                     y="Category", 
+                     orientation="h",
+                     title=f"Quantity Sold per Category - {selected_month}")
+
+        fig.update_layout(
+            yaxis={'categoryorder': 'total ascending'},
+            xaxis_title="Quantity Sold",
+            yaxis_title="Category",
+            paper_bgcolor="white"
+        )
+
+        return fig
