@@ -105,11 +105,11 @@ def register_callbacks(app):
 
     @app.callback(
         Output('revenue-trends', 'spec'),
-        Input('toggle-metric', 'value')
+        Input('num-months', 'value')
     )
 
-    def create_revenue_trends(metric):
-        fig = alt.Chart(revenue_trends, width='container', height='container').mark_line(point=True).encode(
+    def create_revenue_trends(num_months):
+        fig = alt.Chart(revenue_trends.head(num_months), width='container', height='container').mark_line(point=True).encode(
             x=alt.X('InvoiceDate:T', title='Date', axis=alt.Axis(format='%b %Y')),  # Format dates
             y=alt.Y('Revenue:Q', title='Revenue ($)'),
             tooltip=['InvoiceDate', 'Revenue']
@@ -127,10 +127,9 @@ def register_callbacks(app):
 
 
     @app.callback(
-        Output('revenue-by-product', 'spec'),
-        Input('toggle-metric', 'value')
+        Output('revenue-by-product', 'spec')
     )
-    def create_revenue_by_product(metric):
+    def create_revenue_by_product():
         top_product_revenue = product_revenue.nlargest(10, 'Revenue')
     
         fig = alt.Chart(top_product_revenue, width='container', height='container').mark_bar().encode(
