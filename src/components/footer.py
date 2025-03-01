@@ -12,7 +12,7 @@ def footer():
             dbc.Row([
                 dbc.Col(
                     html.P([
-                        html.A("GitHub Repository", href="https://github.com/your-repo-link", target="_blank",
+                        html.A("GitHub Repository", href="https://github.com/UBC-MDS/DSCI-532_2025_15_RetailPulse.git", target="_blank",
                                style={"color": "white", "textDecoration": "underline"})
                     ], style={"textAlign": "left"}), 
                     width=4
