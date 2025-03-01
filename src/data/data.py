@@ -81,7 +81,7 @@ def get_summary_metrics():
         "total_orders": total_orders,
         "total_customers": total_customers
     }
-
+  
 def get_monthly_sales_data(selected_month):
     """Returns the quantity sold per category for a given month."""
     df['InvoiceDate'] = pd.to_datetime(df['InvoiceDate'])

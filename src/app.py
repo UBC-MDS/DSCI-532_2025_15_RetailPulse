@@ -15,6 +15,7 @@ from components.header import dashboard_title
 from components.summary_metrics import summary_metrics
 from components.monthly_sales_card import monthly_sales_card
 
+
 # Initialize Dash app
 app = dash.Dash(__name__, external_stylesheets=[dbc.themes.BOOTSTRAP])
 server = app.server
@@ -24,7 +25,6 @@ app.layout = dbc.Container(fluid=True, children=[
 
     # Title
     dashboard_title(),
-
     summary_metrics(),
     dbc.Row([
         dbc.Col(product_revenue_card(), width=12)
