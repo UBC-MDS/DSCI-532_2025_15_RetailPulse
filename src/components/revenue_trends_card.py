@@ -6,5 +6,6 @@ def revenue_trends_card():
         dbc.CardBody([
             dcc.Graph(id='revenue-trends', style={'height': '100%', 'width': '100%'}) 
         ], style={'height': '100%', 'overflow': 'hidden'}),
-        style={'display': 'flex', 'flex-direction': 'column', 'height': '48vh', 'min-height': '400px'}
+        className="mb-4 shadow",
+        style={'display': 'flex', 'flex-direction': 'column', 'height': '60vh', 'min-height': '400px'}
     )

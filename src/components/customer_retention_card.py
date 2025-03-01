@@ -9,6 +9,6 @@ def customer_retention_card():
             dcc.Graph(id='monthly-retention', style={'height': '100%', 'width': '100%'}),
             retention_slider()
         ], style={'display': 'flex', 'flex-direction': 'column', 'height': '100%', 'overflow': 'hidden'}), 
-        className="shadow",
-        style={'display': 'flex', 'flex-direction': 'column', 'height': '48vh', 'min-height': '400px'}
+        className="mb-4 shadow",
+        style={'display': 'flex', 'flex-direction': 'column', 'height': '60vh', 'min-height': '400px'}
     )
