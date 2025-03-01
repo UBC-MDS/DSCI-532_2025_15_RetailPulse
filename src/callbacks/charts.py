@@ -2,7 +2,7 @@ import pandas as pd
 from dash import Input, Output
 import plotly.express as px
 from data.data import get_monthly_customer_retention, get_revenue_trends, get_country_sales, get_data, get_product_revenue
-
+import altair as alt
 
 df = get_data()
 revenue_trends = get_revenue_trends()
@@ -110,19 +110,23 @@ def register_callbacks(app):
 
 
     @app.callback(
-        Output('revenue-by-product', 'figure'),
+        Output('revenue-by-product', 'spec'),
         Input('toggle-metric', 'value')
     )
     def create_revenue_by_product(metric):
-        top_product_revenue = product_revenue.head(10)
-        
-        fig = px.bar(
-            top_product_revenue,
-            x='Revenue',
-            y='Description',
-            orientation='h',
-            title='Revenue by Product',
-            labels={'Revenue': 'Revenue ($)', 'Description': 'Product'}
+        top_product_revenue = product_revenue.nlargest(10, 'Revenue')  # Ensure descending order
+    
+        fig = alt.Chart(top_product_revenue, width='container', height='container').mark_bar().encode(
+            x=alt.X('Revenue:Q', title='Revenue ($)'),
+            y=alt.Y('Description:N', sort='-x', title='Product'),  # Sort by Revenue in descending order
+            tooltip=['Description', 'Revenue']
+        ).configure_axis(
+            labelFontSize=16,
+            titleFontSize=20
+        ).configure_title(
+            fontSize=20
+        ).properties(
+            title='Revenue by Product'
         )
-        fig.update_layout(yaxis={'categoryorder':'total ascending'})
-        return fig
+        
+        return (fig.to_dict())
