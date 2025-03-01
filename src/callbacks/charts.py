@@ -75,22 +75,33 @@ def register_callbacks(app):
 
 
     @app.callback(
-        Output('monthly-retention', 'figure'),
+        Output('monthly-retention', 'spec'),
         Input('num-months', 'value')
     )
     def update_monthly_retention(num_months):
         filtered_retention = get_monthly_customer_retention(num_months)
 
-        fig = px.line(
-            filtered_retention, 
-            x=filtered_retention['Month'].astype(str), 
-            y='CustomerID',
+        if isinstance(filtered_retention['Month'].iloc[0], pd.Period):
+            filtered_retention['Month'] = filtered_retention['Month'].dt.strftime('%Y-%m')
+        else:
+            filtered_retention['Month'] = filtered_retention['Month'].astype(str)
+
+        fig = alt.Chart(filtered_retention, width='container', height='container').mark_line(point=True).encode(
+            x=alt.X('Month:N', title='Month', sort=None), 
+            y=alt.Y('CustomerID:Q', title='Returning Customers'),
+            tooltip=['Month', 'CustomerID']
+        ).properties(
             title=f'Returning Customers by Month (Last {num_months} Months)',
-            labels={'CustomerID': 'Returning Customers', 'x': 'Month'}
+        ).configure_axis(
+            labelFontSize=16,
+            titleFontSize=20,
+            labelAngle=-45
+        ).configure_title(
+            fontSize=20
         )
 
-        fig.update_traces(mode='lines+markers', marker=dict(size=8, symbol='circle'))
-        return fig
+        return fig.to_dict()
+
 
     @app.callback(
         Output('revenue-trends', 'spec'),
@@ -103,9 +114,7 @@ def register_callbacks(app):
             y=alt.Y('Revenue:Q', title='Revenue ($)'),
             tooltip=['InvoiceDate', 'Revenue']
         ).properties(
-            title='Monthly Revenue Trends',
-            width="container",
-            height="container"
+            title='Monthly Revenue Trends'
         ).configure_axis(
             labelFontSize=16,
             titleFontSize=20
@@ -122,7 +131,7 @@ def register_callbacks(app):
         Input('toggle-metric', 'value')
     )
     def create_revenue_by_product(metric):
-        top_product_revenue = product_revenue.nlargest(10, 'Revenue')  # Ensure descending order
+        top_product_revenue = product_revenue.nlargest(10, 'Revenue')
     
         fig = alt.Chart(top_product_revenue, width='container', height='container').mark_bar().encode(
             x=alt.X('Revenue:Q', title='Revenue ($)'),
