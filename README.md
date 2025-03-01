@@ -20,8 +20,7 @@ This project uses data from the [Online Retail Dataset](https://archive.ics.uci.
 
 ## **Demo**
 
-[We will insert the gif here]
-
+![Demo](https://github.com/user-attachments/assets/034c0863-5689-48cc-a81e-167077c4e496)
 
 
 ## **Running the App Locally**
