@@ -10,40 +10,51 @@ from components.revenue_trends_card import revenue_trends_card
 from components.customer_retention_card import customer_retention_card
 from components.product_revenue_card import product_revenue_card
 from components.footer import footer
-from components.header import dashboard_title
+
 from components.summary_metrics import summary_metrics
 from components.monthly_sales_card import monthly_sales_card
-
+from components.sidebar import sidebar
 
 # Initialize Dash app
 app = dash.Dash(__name__, external_stylesheets=[dbc.themes.BOOTSTRAP])
 server = app.server
 
-# Layout
+
 app.layout = dbc.Container(fluid=True, children=[
 
-    # Title
-    dashboard_title(),
-    summary_metrics(),
     dbc.Row([
-        dbc.Col(product_revenue_card(), width=12)
-    ], className="mb-4"),  # Adds margin below the row
+        dbc.Col(sidebar(), width=3), 
 
-    dbc.Row([
         dbc.Col([
-            revenue_trends_card(),
-            customer_retention_card()
-        ], width=6),
+            dbc.Row([
+                dbc.Col(summary_metrics(), width=12, style={
+                    'display': 'flex', 
+                    'flex-direction': 
+                    'column', 'height': '100%', 
+                    'overflow': 'hidden',
+                    })
+            ]),
+            dbc.Row([
+                dbc.Col(map_card(), width=12)
+            ]),
 
-        # Right Column: Choropleth Map & Another Chart Stacked
-        dbc.Col([
-            map_card(),
-            monthly_sales_card()
-        ], width=6)
+            dbc.Row([
+                dbc.Col([
+                    dbc.Row([
+                        dbc.Col(revenue_trends_card(), width=6),
+                        dbc.Col(customer_retention_card(), width=6)
+                    ]),
+
+                    dbc.Row([
+                        dbc.Col(product_revenue_card(), width=6),
+                        dbc.Col(monthly_sales_card(), width=6)
+                    ])
+                ], width=12)
+            ])
+        ], width=9, style={'padding-top': '10px'}) 
     ], className="align-items-stretch"),
-
-    footer()
 ])
+
 
 # Register Callbacks
 register_callbacks(app)
