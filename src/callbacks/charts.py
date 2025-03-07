@@ -26,20 +26,23 @@ def register_callbacks(app):
             hover_name='Country',
             title='🌍 Geographical Sales Distribution',
             color_continuous_scale=px.colors.sequential.Viridis,
-            projection='mercator',
-            custom_data=['Country', 'Revenue', 'Quantity']
+            custom_data=['Country', 'Revenue', 'Quantity'],
+            projection="natural earth"
         )
 
         # Resize map
         fig.update_layout(
             autosize=False,
-            margin=dict(l=0, r=0, b=0, t=50, pad=4, autoexpand=True),
-            width=700,
-            height=400
+            margin=dict(l=0, r=0, b=0, t=30, pad=2, autoexpand=True),
+            width=1080,
+            height=350
         )
 
-
-        fig.update_geos(lataxis_range=[-20, 90])
+        fig.update_geos(
+            lataxis_range=[-20, 90],
+            lonaxis_range=[-200, 200],  # Ensures full world view
+            projection_scale=1 
+        )
 
         # Custom hover template
         # Note the underscore
@@ -93,10 +96,10 @@ def register_callbacks(app):
         ).properties(
             title=f'Returning Customers by Month (Last {num_months} Months)',
         ).configure_axis(
-            labelFontSize=14,
-            titleFontSize=16
+            labelFontSize=12,
+            titleFontSize=14
         ).configure_title(
-            fontSize=20
+            fontSize=16
         )
 
         return fig.to_dict()
@@ -118,10 +121,10 @@ def register_callbacks(app):
         ).properties(
             title='Monthly Revenue Trends'
         ).configure_axis(
-            labelFontSize=14,
-            titleFontSize=16
+            labelFontSize=12,
+            titleFontSize=14
         ).configure_title(
-            fontSize=20
+            fontSize=16
         )
         
         return fig.to_dict()
@@ -143,10 +146,10 @@ def register_callbacks(app):
                 alt.Tooltip('Revenue:Q', title='Revenue ($):', format="$.2f") 
             ]
         ).configure_axis(
-            labelFontSize=14,
-            titleFontSize=16
+            labelFontSize=12,
+            titleFontSize=14
         ).configure_title(
-            fontSize=20
+            fontSize=16
         ).properties(
             title='Revenue by Product'
         )
@@ -155,7 +158,7 @@ def register_callbacks(app):
     
     @app.callback(
         Output("monthly-sales-bar-chart", "spec"),
-        [Input("month-dropdown", "value")]
+        [Input("country-dropdown", "value")]
     )
     def update_monthly_sales_chart(selected_month):
         # Get filtered data from data.py
@@ -170,10 +173,10 @@ def register_callbacks(app):
                 alt.Tooltip('Category', title='Category:') 
             ]
         ).configure_axis(
-            labelFontSize=14,
-            titleFontSize=16
+            labelFontSize=12,
+            titleFontSize=14
         ).configure_title(
-            fontSize=20
+            fontSize=16
         ).properties(
             title=f"Quantity Sold per Category - {selected_month}",
             background="white"
