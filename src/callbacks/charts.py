@@ -146,7 +146,7 @@ def register_callbacks(app):
 
         fig = alt.Chart(filtered_retention, width='container', height='container').mark_line(point=True, color="#488a99").encode(
             x=alt.X('Month:N', title='Month', sort=None, axis=alt.Axis(labelAngle=45)), 
-            y=alt.Y('Count:Q', title='Returning Customers'),
+            y=alt.Y('Count:Q', title=None),
             tooltip=['Month', 'Count']
         ).properties(
             title=f'Returning Customers by Month (Last {num_months} Months)',
@@ -170,7 +170,7 @@ def register_callbacks(app):
 
         fig = alt.Chart(revenue_trends, width='container', height='container').mark_line(point=True, color="#488a99").encode(
             x=alt.X('InvoiceDate:T', title='Date', axis=alt.Axis(format='%b %Y')),  # Format dates
-            y=alt.Y('Revenue:Q', title='Revenue ($)'),
+            y=alt.Y('Revenue:Q', title=None),
             tooltip=[
                 alt.Tooltip('InvoiceDate:T', title='Date:', format='%b %Y'),
                 alt.Tooltip('Revenue:Q', title='Revenue ($):', format="$.2f") 
@@ -199,7 +199,7 @@ def register_callbacks(app):
     
         fig = alt.Chart(top_product_revenue, width='container', height='container').mark_bar(color="#488a99").encode(
             x=alt.X('Revenue:Q', title='Revenue ($)'),
-            y=alt.Y('Description:N', sort='-x', title='Product', axis=alt.Axis(labelAngle=0)),  # Sort by Revenue in descending order
+            y=alt.Y('Description:N', sort='-x', title=None, axis=alt.Axis(labelAngle=0)),  # Sort by Revenue in descending order
             tooltip=[
                 alt.Tooltip('Description', title='Quantity (#):'),
                 alt.Tooltip('Revenue:Q', title='Revenue ($):', format="$.2f") 
@@ -228,7 +228,7 @@ def register_callbacks(app):
         # Create bar chart
         chart = alt.Chart(df_filtered, width='container', height='container').mark_bar(color="#488a99").encode(
             x=alt.X("Quantity", title="Quantity Sold"),
-            y=alt.Y("Category", sort="-x", title="Category"),
+            y=alt.Y("Category", sort="-x", title=None),
             tooltip=[
                 alt.Tooltip('Quantity:Q', title='Quantity (#):'),
                 alt.Tooltip('Category', title='Category:') 
