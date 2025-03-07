@@ -28,7 +28,7 @@ def metric_toggle():
     )
 
 # Monthly retention slider
-def retention_slider():
+def month_slider():
     return dbc.Card(
         dbc.CardBody([
             html.H5("Select Number of Months", className="card-title", style={"color": "white", "textAlign": "center"}),
