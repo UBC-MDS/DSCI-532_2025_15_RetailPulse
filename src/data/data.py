@@ -22,8 +22,9 @@ def filter_last_n_months(n_months):
     return df[df['InvoiceDate'] >= n_months_ago].copy()
 
 
-def get_country_sales(no_months=6):
+def get_country_sales(no_months=6, selected_country='United Kingdom'):
     my_df = filter_last_n_months(no_months)
+    my_df = my_df[my_df['Country'] == selected_country]
     
     # Aggregate by country
     country_sales = my_df.groupby('Country', as_index=False).agg({'Revenue': 'sum', 'Quantity': 'sum'})
