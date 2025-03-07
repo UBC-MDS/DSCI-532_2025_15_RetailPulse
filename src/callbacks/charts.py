@@ -1,11 +1,20 @@
 import pandas as pd
-from dash import Input, Output
-import plotly.express as px
-from data.data import get_monthly_customer_retention, get_revenue_trends, get_country_sales, get_data, get_product_revenue, get_monthly_sales_data
 import altair as alt
-from data.data import get_summary_metrics 
+import plotly.express as px
+
+from dash import Input, Output
 import dash_html_components as html
 import dash_bootstrap_components as dbc
+
+from data.data import (
+    get_monthly_customer_retention, 
+    get_revenue_trends,
+    get_country_sales,
+    get_data,
+    get_product_revenue,
+    get_monthly_sales_data,
+    get_summary_metrics 
+)
 
 df = get_data()
 

@@ -1,10 +1,13 @@
 from dash import html
 import dash_bootstrap_components as dbc
+
 from components.header import dashboard_title
-from components.widgets import month_slider
-from components.widgets import category_dropdown
-from components.widgets import country_dropdown
-from components.widgets import metric_toggle
+from components.widgets import (
+    month_slider,
+    category_dropdown,
+    country_dropdown,
+    metric_toggle
+)
 from components.footer import footer
 
 
