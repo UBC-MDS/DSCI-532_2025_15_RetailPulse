@@ -20,6 +20,7 @@ def dashboard_title():
         style={
             "backgroundColor": '#488a99',
             "border": "2px solid white", 
-            "borderRadius": "10px"      
+            "borderRadius": "10px", 
+            "height": "15vh"    
         }
     )
