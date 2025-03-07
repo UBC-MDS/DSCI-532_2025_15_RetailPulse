@@ -8,6 +8,5 @@ def map_card():
         dbc.CardBody([
             dcc.Graph(id='map', style={'height': '100%', 'width': '15vw'}) 
         ]),
-        className="mb-4 shadow",
-        style={'display': 'flex', 'flex-direction': 'column', 'height': '30vh', 'min-height': '400px'}
+        className="map-graph"
     )
