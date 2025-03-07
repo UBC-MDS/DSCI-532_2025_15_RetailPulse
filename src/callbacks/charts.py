@@ -1,55 +1,61 @@
 import pandas as pd
-from dash import Input, Output
-import plotly.express as px
-from data.data import get_monthly_customer_retention, get_revenue_trends, get_country_sales, get_data, get_product_revenue, get_monthly_sales_data
 import altair as alt
-from data.data import get_summary_metrics 
+import plotly.express as px
+
+from dash import Input, Output
 import dash_html_components as html
 import dash_bootstrap_components as dbc
 
+from data.data import (
+    get_monthly_customer_retention, 
+    get_revenue_trends,
+    get_country_sales,
+    get_data,
+    get_product_revenue,
+    get_monthly_sales_data,
+    get_summary_metrics 
+)
+
 df = get_data()
-revenue_trends = get_revenue_trends()
-monthly_retention = get_monthly_customer_retention(6)
-country_sales = get_country_sales()
-product_revenue = get_product_revenue()
+
+def summary_metrics(total_revenue, total_orders, total_customers):
+    return [dbc.Row(
+        [
+            dbc.Col(
+                dbc.Card(
+                    dbc.CardBody([
+                        html.H5("Total Revenue", className="card-title text-center"),
+                        html.H4(f"${total_revenue:,.0f}", className="card-text text-center"),
+                    ]),
+                    className="summary-card summary-card-primary"
+                ), width=4
+            ),
+
+            dbc.Col(
+                dbc.Card(
+                    dbc.CardBody([
+                        html.H5("Total Orders", className="card-title text-center"),
+                        html.H4(f"{total_orders:,}", className="card-text text-center"),
+                    ]),
+                    className="summary-card summary-card-success"
+                ), width=4
+            ),
+
+            dbc.Col(
+                dbc.Card(
+                    dbc.CardBody([
+                        html.H5("Total Customers", className="card-title text-center"),
+                        html.H4(f"{total_customers:,}", className="card-text text-center"),
+                    ]),
+                    className="summary-card summary-card-info"
+                ), width=4
+            ),
+        ],
+        justify="center",
+    )]
 
 
 def register_callbacks(app):
-    def summary_metrics(total_revenue, total_orders, total_customers):
-        return [dbc.Row(
-                [
-                    dbc.Col(
-                        dbc.Card(
-                            dbc.CardBody([
-                                html.H5("Total Revenue", className="card-title text-center"),
-                                html.H4(f"${total_revenue:,.0f}", className="card-text text-center"),
-                            ]),
-                            color="primary", className="summary-card"
-                        ), width=4
-                    ),
-
-                    dbc.Col(
-                        dbc.Card(
-                            dbc.CardBody([
-                                html.H5("Total Orders", className="card-title text-center"),
-                                html.H4(f"{total_orders:,}", className="card-text text-center"),
-                            ]),
-                            color="success", className="summary-card"
-                        ), width=4
-                    ),
-
-                    dbc.Col(
-                        dbc.Card(
-                            dbc.CardBody([
-                                html.H5("Total Customers", className="card-title text-center"),
-                                html.H4(f"{total_customers:,}", className="card-text text-center"),
-                            ]),
-                            color="info", className="summary-card",
-                        ), width=4
-                    ),
-                ],
-                justify="center",
-            )]
 
     @app.callback(
         Output("summary-metrics-container", "children"),
@@ -147,9 +153,9 @@ def register_callbacks(app):
         else:
             filtered_retention['Month'] = filtered_retention['Month'].astype(str)
 
-        fig = alt.Chart(filtered_retention, width='container', height='container').mark_line(point=True).encode(
+        fig = alt.Chart(filtered_retention, width='container', height='container').mark_line(point=True, color="#488a99").encode(
             x=alt.X('Month:N', title='Month', sort=None, axis=alt.Axis(labelAngle=45)), 
-            y=alt.Y('Count:Q', title='Returning Customers'),
+            y=alt.Y('Count:Q', title=None),
             tooltip=['Month', 'Count']
         ).properties(
             title=f'Returning Customers by Month (Last {num_months} Months)',
@@ -171,9 +177,9 @@ def register_callbacks(app):
     def create_revenue_trends(num_months):
         revenue_trends = get_revenue_trends(num_months)
 
-        fig = alt.Chart(revenue_trends, width='container', height='container').mark_line(point=True).encode(
+        fig = alt.Chart(revenue_trends, width='container', height='container').mark_line(point=True, color="#488a99").encode(
             x=alt.X('InvoiceDate:T', title='Date', axis=alt.Axis(format='%b %Y')),  # Format dates
-            y=alt.Y('Revenue:Q', title='Revenue ($)'),
+            y=alt.Y('Revenue:Q', title=None),
             tooltip=[
                 alt.Tooltip('InvoiceDate:T', title='Date:', format='%b %Y'),
                 alt.Tooltip('Revenue:Q', title='Revenue ($):', format="$.2f") 
@@ -200,9 +206,9 @@ def register_callbacks(app):
         product_revenue = get_product_revenue(num_months)
         top_product_revenue = product_revenue.nlargest(10, 'Revenue')
     
-        fig = alt.Chart(top_product_revenue, width='container', height='container').mark_bar().encode(
+        fig = alt.Chart(top_product_revenue, width='container', height='container').mark_bar(color="#488a99").encode(
             x=alt.X('Revenue:Q', title='Revenue ($)'),
-            y=alt.Y('Description:N', sort='-x', title='Product', axis=alt.Axis(labelAngle=0)),  # Sort by Revenue in descending order
+            y=alt.Y('Description:N', sort='-x', title=None, axis=alt.Axis(labelAngle=0)),  # Sort by Revenue in descending order
             tooltip=[
                 alt.Tooltip('Description', title='Quantity (#):'),
                 alt.Tooltip('Revenue:Q', title='Revenue ($):', format="$.2f") 
@@ -229,9 +235,9 @@ def register_callbacks(app):
         df_filtered = get_monthly_sales_data(num_months)
 
         # Create bar chart
-        chart = alt.Chart(df_filtered, width='container', height='container').mark_bar().encode(
+        chart = alt.Chart(df_filtered, width='container', height='container').mark_bar(color="#488a99").encode(
             x=alt.X("Quantity", title="Quantity Sold"),
-            y=alt.Y("Category", sort="-x", title="Category"),
+            y=alt.Y("Category", sort="-x", title=None),
             tooltip=[
                 alt.Tooltip('Quantity:Q', title='Quantity (#):'),
                 alt.Tooltip('Category', title='Category:') 

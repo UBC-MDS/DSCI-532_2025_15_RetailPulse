@@ -1,8 +1,11 @@
 from dash import dcc, html
 import dash_bootstrap_components as dbc
-from data.data import get_month_options
-from data.data import get_category_options
-from data.data import get_country_options
+
+from data.data import (
+    get_month_options,
+    get_category_options,
+    get_country_options
+)
 
 month_options = get_month_options()
 category_options = get_category_options()
@@ -28,7 +31,7 @@ def metric_toggle():
     )
 
 # Monthly retention slider
-def retention_slider():
+def month_slider():
     return dbc.Card(
         dbc.CardBody([
             html.H5("Select Number of Months", className="card-title", style={"color": "white", "textAlign": "center"}),
