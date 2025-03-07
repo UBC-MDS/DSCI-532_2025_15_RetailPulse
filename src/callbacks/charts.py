@@ -9,42 +9,44 @@ import dash_bootstrap_components as dbc
 
 df = get_data()
 
+def summary_metrics(total_revenue, total_orders, total_customers):
+    return [dbc.Row(
+        [
+            dbc.Col(
+                dbc.Card(
+                    dbc.CardBody([
+                        html.H5("Total Revenue", className="card-title text-center"),
+                        html.H4(f"${total_revenue:,.0f}", className="card-text text-center"),
+                    ]),
+                    className="summary-card summary-card-primary"
+                ), width=4
+            ),
+
+            dbc.Col(
+                dbc.Card(
+                    dbc.CardBody([
+                        html.H5("Total Orders", className="card-title text-center"),
+                        html.H4(f"{total_orders:,}", className="card-text text-center"),
+                    ]),
+                    className="summary-card summary-card-success"
+                ), width=4
+            ),
+
+            dbc.Col(
+                dbc.Card(
+                    dbc.CardBody([
+                        html.H5("Total Customers", className="card-title text-center"),
+                        html.H4(f"{total_customers:,}", className="card-text text-center"),
+                    ]),
+                    className="summary-card summary-card-info"
+                ), width=4
+            ),
+        ],
+        justify="center",
+    )]
+
+
 def register_callbacks(app):
-    def summary_metrics(total_revenue, total_orders, total_customers):
-        return [dbc.Row(
-                [
-                    dbc.Col(
-                        dbc.Card(
-                            dbc.CardBody([
-                                html.H5("Total Revenue", className="card-title text-center"),
-                                html.H4(f"${total_revenue:,.0f}", className="card-text text-center"),
-                            ]),
-                            color="primary", className="summary-card"
-                        ), width=4
-                    ),
-
-                    dbc.Col(
-                        dbc.Card(
-                            dbc.CardBody([
-                                html.H5("Total Orders", className="card-title text-center"),
-                                html.H4(f"{total_orders:,}", className="card-text text-center"),
-                            ]),
-                            color="success", className="summary-card"
-                        ), width=4
-                    ),
-
-                    dbc.Col(
-                        dbc.Card(
-                            dbc.CardBody([
-                                html.H5("Total Customers", className="card-title text-center"),
-                                html.H4(f"{total_customers:,}", className="card-text text-center"),
-                            ]),
-                            color="info", className="summary-card",
-                        ), width=4
-                    ),
-                ],
-                justify="center",
-            )]
 
     @app.callback(
         Output("summary-metrics-container", "children"),

@@ -1,13 +1,4 @@
 
-.summary-card {
-    margin: 1px;
-    padding: 2px;
-    height: 11vh;
-    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* Equivalent to dbc shadow */
-    border-radius: 5px;
-    color: white; /* Ensures readability for inverse cards */
-}
-
 .summary-container {
     background-color: #488a99;
     border-radius: 10px;
@@ -17,4 +8,31 @@
     margin-bottom: 10px;
     height: 15vh;
     box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Summary Card Styling */
+.summary-card {
+    background-color: #488a99 !important; /* Makes background black */
+    border-radius: 10px;
+    padding: 10px;
+    margin: 5px;
+    height: 12vh;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Border colors for each type */
+.summary-card-primary {
+    border: 3px solid blue;
+}
+
+.summary-card-success {
+    border: 3px solid green;
+}
+
+.summary-card-info {
+    border: 3px solid #0dcaf0;
+}
+
+.summary-card h5, .summary-card h4 {
+    color: white;
 }
