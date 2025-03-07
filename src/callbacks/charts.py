@@ -77,10 +77,11 @@ def register_callbacks(app):
         Input('toggle-metric', 'value'),
         Input('map', 'hoverData'),
         Input('num-months', 'value'),
-        Input('country-dropdown', 'value')
+        Input('country-dropdown', 'value'),
+        Input('category-dropdown', 'value'),
     )
-    def create_map(metric, hoverData, num_months, selected_country):
-        country_sales = get_country_sales(num_months, selected_country)
+    def create_map(metric, hoverData, num_months, selected_country, selected_category):
+        country_sales = get_country_sales(num_months, selected_country, selected_category)
         fig = px.choropleth(
             country_sales,
             locations='iso_alpha',
