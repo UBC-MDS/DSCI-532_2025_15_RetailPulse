@@ -12,13 +12,6 @@ df['InvoiceDate'] = pd.to_datetime(df['InvoiceDate'])
 df['Month_Label'] = df['InvoiceDate'].dt.strftime('%Y - %B') 
 df['Month_Value'] = df['InvoiceDate'].dt.strftime('%Y-%m')  # Format: "YYYY-MM" (for filtering)
 
-# Get unique month values for dropdown (sorted in descending order)
-month_options = (
-    df[['Month_Label', 'Month_Value']]
-    .drop_duplicates()
-    .sort_values('Month_Value', ascending=False)  # Most recent first
-    .to_dict(orient="records")
-)
 
 def get_data():
     return df
@@ -96,4 +89,20 @@ def get_monthly_sales_data(selected_month):
 
 def get_month_options():
     """Returns available months for the dropdown."""
+    month_options = (
+        df[['Month_Label', 'Month_Value']]
+        .drop_duplicates()
+        .sort_values('Month_Value', ascending=False)  # Most recent first
+        .to_dict(orient="records")
+    )
+    
     return month_options
+
+
+def get_category_options():
+    """Returns available categories for the dropdown."""
+    return list(df.Category.unique())
+
+def get_country_options():
+ """Returns available countries for the dropdown."""
+ return list(df.Country.unique())
