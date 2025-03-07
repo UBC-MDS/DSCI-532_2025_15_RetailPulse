@@ -7,6 +7,5 @@ def product_revenue_card():
         dbc.CardBody([
             dvc.Vega(id='revenue-by-product', spec={}, style={'height': '100%', 'width': '100%', 'flex': '1'})
         ], style={'display': 'flex', 'flex-direction': 'column', 'height': '100%', 'overflow': 'hidden'}), 
-        className="mb-4 shadow",
-        style={'display': 'flex', 'flex-direction': 'column', 'height': '60vh', 'min-height': '400px'}
+        className="indv-graph",
     )

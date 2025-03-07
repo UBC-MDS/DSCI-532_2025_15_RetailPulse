@@ -18,8 +18,9 @@ def dashboard_title():
         ]), 
         className="mb-4 shadow",
         style={
-            "backgroundColor": "#007BFF",
+            "backgroundColor": '#488a99',
             "border": "2px solid white", 
-            "borderRadius": "10px"      
+            "borderRadius": "10px", 
+            "height": "15vh"    
         }
     )

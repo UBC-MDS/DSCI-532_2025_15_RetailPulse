@@ -12,20 +12,22 @@ df['InvoiceDate'] = pd.to_datetime(df['InvoiceDate'])
 df['Month_Label'] = df['InvoiceDate'].dt.strftime('%Y - %B') 
 df['Month_Value'] = df['InvoiceDate'].dt.strftime('%Y-%m')  # Format: "YYYY-MM" (for filtering)
 
-# Get unique month values for dropdown (sorted in descending order)
-month_options = (
-    df[['Month_Label', 'Month_Value']]
-    .drop_duplicates()
-    .sort_values('Month_Value', ascending=False)  # Most recent first
-    .to_dict(orient="records")
-)
 
 def get_data():
     return df
 
-def get_country_sales():
+def filter_last_n_months(n_months):
+    latest_date = df['InvoiceDate'].max()
+    n_months_ago = latest_date - pd.DateOffset(months=n_months)
+    return df[df['InvoiceDate'] >= n_months_ago].copy()
+
+
+def get_country_sales(no_months=6):
+    my_df = filter_last_n_months(no_months)
+    
     # Aggregate by country
-    country_sales = df.groupby('Country', as_index=False).agg({'Revenue': 'sum', 'Quantity': 'sum'})
+    country_sales = my_df.groupby('Country', as_index=False).agg({'Revenue': 'sum', 'Quantity': 'sum'})
+    
     # Load country coordinates for mapping
     geo_data = px.data.gapminder()[['country', 'iso_alpha']].drop_duplicates()
     all_countries = pd.DataFrame({'Country': geo_data['country'], 'iso_alpha': geo_data['iso_alpha']})
@@ -34,18 +36,17 @@ def get_country_sales():
 
     return country_sales
 
-def get_revenue_trends():
-    return df.resample('M', on='InvoiceDate').agg({'Revenue': 'sum'}).reset_index()
+def get_revenue_trends(no_months=6):
+    my_df = filter_last_n_months(no_months)
+    return my_df.resample('M', on='InvoiceDate').agg({'Revenue': 'sum'}).reset_index()
 
-def get_monthly_customer_retention(no_months):
+def get_monthly_customer_retention(no_months=6):
         
     # Customer Retention Metrics
-    latest_date = df['InvoiceDate'].max()
-    n_months_ago = latest_date - pd.DateOffset(months=no_months)
-    df_last_n_months = df[df['InvoiceDate'] >= n_months_ago].copy()
+    my_df = filter_last_n_months(no_months)
 
-    df_last_n_months['Month'] = df_last_n_months['InvoiceDate'].dt.to_period('M')
-    customer_months = df_last_n_months.groupby(['CustomerID', 'Month']).size().reset_index(name='Purchases')
+    my_df['Month'] = my_df['InvoiceDate'].dt.to_period('M')
+    customer_months = my_df.groupby(['CustomerID', 'Month']).size().reset_index(name='Purchases')
 
     # Calculate previous month's purchases using shift
     customer_months['PreviousMonth'] = customer_months.groupby('CustomerID')['Month'].shift(1)
@@ -63,18 +64,23 @@ def get_monthly_customer_retention(no_months):
 
     return monthly_retention
 
-def get_product_revenue():
-    df['Revenue'] = df['Quantity'] * df['UnitPrice']
+def get_product_revenue(no_months=6):
+    my_df = filter_last_n_months(no_months)
+
+    my_df['Revenue'] = my_df['Quantity'] * my_df['UnitPrice']
     # Group by product and sum the revenue
-    df_grouped = df.groupby('Description', as_index=False)['Revenue'].sum()
+    df_grouped = my_df.groupby('Description', as_index=False)['Revenue'].sum()
     df_grouped = df_grouped.sort_values(by='Revenue', ascending=False)
     return df_grouped
 
-def get_summary_metrics():
+def get_summary_metrics(no_months=6):
     """Returns total revenue, total orders, and unique customers"""
-    total_revenue = df["Revenue"].sum()
-    total_orders = df["Quantity"].sum()
-    total_customers = df["CustomerID"].nunique()  # Count unique customers
+
+    my_df = filter_last_n_months(no_months)
+
+    total_revenue = my_df["Revenue"].sum()
+    total_orders = my_df["Quantity"].sum()
+    total_customers = my_df["CustomerID"].nunique()  # Count unique customers
 
     return {
         "total_revenue": total_revenue,
@@ -82,18 +88,36 @@ def get_summary_metrics():
         "total_customers": total_customers
     }
   
-def get_monthly_sales_data(selected_month):
+def get_monthly_sales_data(num_months):
     """Returns the quantity sold per category for a given month."""
-    df['InvoiceDate'] = pd.to_datetime(df['InvoiceDate'])
+    my_df = filter_last_n_months(num_months)
+    my_df['InvoiceDate'] = pd.to_datetime(my_df['InvoiceDate'])
     
-    df['Month'] = df['InvoiceDate'].dt.strftime('%Y-%m') 
-    filtered_df = df[df['Month'] == selected_month]
+    my_df['Month'] = my_df['InvoiceDate'].dt.strftime('%Y-%m') 
 
-    monthly_sales = filtered_df.groupby('Category', as_index=False)['Quantity'].sum()
+    monthly_sales = my_df.groupby('Category', as_index=False)['Quantity'].sum()
     monthly_sales = monthly_sales.sort_values(by="Quantity", ascending=False)
     
     return monthly_sales
 
+
 def get_month_options():
     """Returns available months for the dropdown."""
+    month_options = (
+        df[['Month_Label', 'Month_Value']]
+        .drop_duplicates()
+        .sort_values('Month_Value', ascending=False)  # Most recent first
+        .to_dict(orient="records")
+    )
+    
     return month_options
+
+
+def get_category_options():
+    """Returns available categories for the dropdown."""
+    return list(df.Category.unique())
+
+
+def get_country_options():
+    """Returns available countries for the dropdown."""
+    return list(df.Country.unique())
