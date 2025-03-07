@@ -144,7 +144,7 @@ def register_callbacks(app):
         else:
             filtered_retention['Month'] = filtered_retention['Month'].astype(str)
 
-        fig = alt.Chart(filtered_retention, width='container', height='container').mark_line(point=True).encode(
+        fig = alt.Chart(filtered_retention, width='container', height='container').mark_line(point=True, color="#488a99").encode(
             x=alt.X('Month:N', title='Month', sort=None, axis=alt.Axis(labelAngle=45)), 
             y=alt.Y('Count:Q', title='Returning Customers'),
             tooltip=['Month', 'Count']
@@ -168,7 +168,7 @@ def register_callbacks(app):
     def create_revenue_trends(num_months):
         revenue_trends = get_revenue_trends(num_months)
 
-        fig = alt.Chart(revenue_trends, width='container', height='container').mark_line(point=True).encode(
+        fig = alt.Chart(revenue_trends, width='container', height='container').mark_line(point=True, color="#488a99").encode(
             x=alt.X('InvoiceDate:T', title='Date', axis=alt.Axis(format='%b %Y')),  # Format dates
             y=alt.Y('Revenue:Q', title='Revenue ($)'),
             tooltip=[
@@ -197,7 +197,7 @@ def register_callbacks(app):
         product_revenue = get_product_revenue(num_months)
         top_product_revenue = product_revenue.nlargest(10, 'Revenue')
     
-        fig = alt.Chart(top_product_revenue, width='container', height='container').mark_bar().encode(
+        fig = alt.Chart(top_product_revenue, width='container', height='container').mark_bar(color="#488a99").encode(
             x=alt.X('Revenue:Q', title='Revenue ($)'),
             y=alt.Y('Description:N', sort='-x', title='Product', axis=alt.Axis(labelAngle=0)),  # Sort by Revenue in descending order
             tooltip=[
@@ -226,7 +226,7 @@ def register_callbacks(app):
         df_filtered = get_monthly_sales_data(num_months)
 
         # Create bar chart
-        chart = alt.Chart(df_filtered, width='container', height='container').mark_bar().encode(
+        chart = alt.Chart(df_filtered, width='container', height='container').mark_bar(color="#488a99").encode(
             x=alt.X("Quantity", title="Quantity Sold"),
             y=alt.Y("Category", sort="-x", title="Category"),
             tooltip=[
