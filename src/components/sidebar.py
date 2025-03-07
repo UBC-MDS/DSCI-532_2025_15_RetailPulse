@@ -1,6 +1,5 @@
-from dash import Dash, dash_table, dcc, callback, Input, Output, html
+from dash import html
 import dash_bootstrap_components as dbc
-import dash_vega_components as dvc
 from components.header import dashboard_title
 from components.widgets import retention_slider
 from components.widgets import category_dropdown
@@ -31,18 +30,9 @@ def sidebar():
             html.Div(
                 footer(),
                 style={
-                    'margin-top': 'auto',  # Pushes footer to the bottom
+                    'margin-top': 'auto',
                 }
             )
         ],
-        style={
-            'background-color': '#488a99',
-            'margin': 2,
-            'padding': 2,
-            'margin-top': '10px',
-            "border-radius": "10px",
-            'height': '150vh',
-            'display': 'flex',
-            'flex-direction': 'column',
-        }
+        className="sidebar-container "
     )

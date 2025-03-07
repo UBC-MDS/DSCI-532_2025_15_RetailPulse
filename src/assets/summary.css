@@ -1,0 +1,20 @@
+
+.summary-card {
+    margin: 1px;
+    padding: 2px;
+    height: 11vh;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* Equivalent to dbc shadow */
+    border-radius: 5px;
+    color: white; /* Ensures readability for inverse cards */
+}
+
+.summary-container {
+    background-color: #488a99;
+    border-radius: 10px;
+    padding: 1px;
+    border: 2px solid white;
+    margin: 1px;
+    margin-bottom: 10px;
+    height: 15vh;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+}

@@ -5,22 +5,7 @@ from dash import html
 def dashboard_title():
     return dbc.Card(
         dbc.CardBody([
-            html.H1(
-                "Retail Pulse",
-                className="text-center",
-                style={
-                    "padding": "2vh 0",
-                    "fontSize": "3vw",  
-                    "color": "white",
-                    "textAlign": "center"
-                }
-            )
+            html.H1("Retail Pulse", className="dashboard-title-text")
         ]), 
-        className="mb-4 shadow",
-        style={
-            "backgroundColor": '#488a99',
-            "border": "2px solid white", 
-            "borderRadius": "10px", 
-            "height": "15vh"    
-        }
+        className="dashboard-title shadow"
     )

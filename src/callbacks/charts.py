@@ -8,11 +8,6 @@ import dash_html_components as html
 import dash_bootstrap_components as dbc
 
 df = get_data()
-revenue_trends = get_revenue_trends()
-monthly_retention = get_monthly_customer_retention(6)
-country_sales = get_country_sales()
-product_revenue = get_product_revenue()
-
 
 def register_callbacks(app):
     def summary_metrics(total_revenue, total_orders, total_customers):
