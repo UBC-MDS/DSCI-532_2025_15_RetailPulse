@@ -34,5 +34,5 @@ def sidebar():
                 }
             )
         ],
-        className="sidebar-container "
+        className="sidebar-container"
     )

@@ -1,6 +1,5 @@
 import dash_bootstrap_components as dbc
 import dash_vega_components as dvc
-from data.data import get_month_options 
 
 def monthly_sales_card():
     return dbc.Card(

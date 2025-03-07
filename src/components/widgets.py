@@ -9,7 +9,6 @@ category_options = get_category_options()
 country_options = get_country_options()
 
 # Metric toggle radio buttons
-
 def metric_toggle():
     return dbc.Card(
         dbc.CardBody([
