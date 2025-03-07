@@ -15,7 +15,5 @@ def monthly_sales_card():
             
         ], 
         style={'display': 'flex', 'flex-direction': 'column', 'height': '100%', 'overflow': 'hidden'}), 
-        
-        className="mb-4 shadow",
-        style={'display': 'flex', 'flex-direction': 'column', 'height': '30vh', 'min-height': '400px'}
+        className="indv-graph"
     )
