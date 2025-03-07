@@ -178,10 +178,10 @@ def register_callbacks(app):
         revenue_trends = get_revenue_trends(num_months)
 
         fig = alt.Chart(revenue_trends, width='container', height='container').mark_line(point=True, color="#488a99").encode(
-            x=alt.X('InvoiceDate:T', title='Date', axis=alt.Axis(format='%b %Y')),  # Format dates
+            x=alt.X('Month:N', title='Date', axis=alt.Axis(labelAngle=45)),  # Format dates
             y=alt.Y('Revenue:Q', title=None),
             tooltip=[
-                alt.Tooltip('InvoiceDate:T', title='Date:', format='%b %Y'),
+                alt.Tooltip('Month:N', title='Date:'),
                 alt.Tooltip('Revenue:Q', title='Revenue ($):', format="$.2f") 
             ]
         ).properties(
@@ -231,7 +231,6 @@ def register_callbacks(app):
     )
     def update_monthly_sales_chart(selected_country, num_months):
         # Get filtered data from data.py
-
         df_filtered = get_monthly_sales_data(num_months)
 
         # Create bar chart

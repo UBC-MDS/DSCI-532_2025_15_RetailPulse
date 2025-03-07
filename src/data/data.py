@@ -38,7 +38,12 @@ def get_country_sales(no_months=6):
 
 def get_revenue_trends(no_months=6):
     my_df = filter_last_n_months(no_months)
-    return my_df.resample('M', on='InvoiceDate').agg({'Revenue': 'sum'}).reset_index()
+    my_df['InvoiceDate'] = pd.to_datetime(my_df['InvoiceDate']) 
+    my_df['Month'] = my_df['InvoiceDate'].dt.to_period('M').astype(str)
+    
+    monthly_revenue = my_df.groupby('Month')['Revenue'].sum().reset_index()
+    print(monthly_revenue)
+    return monthly_revenue
 
 def get_monthly_customer_retention(no_months=6):
         
