@@ -152,6 +152,12 @@ def register_callbacks(app):
     def update_monthly_retention(num_months, selected_country, selected_category):
         filtered_retention = get_monthly_customer_retention(num_months, selected_country, selected_category)
 
+        if filtered_retention.empty:
+            # Create a default DataFrame with zero values
+            filtered_retention = pd.DataFrame({
+                'Month': pd.date_range(end='2011-12', periods=num_months, freq='M').strftime('%Y-%m'),
+                'Count': [0] * num_months
+            })
         if isinstance(filtered_retention['Month'].iloc[0], pd.Period):
             filtered_retention['Month'] = filtered_retention['Month'].dt.strftime('%Y-%m')
         else:
