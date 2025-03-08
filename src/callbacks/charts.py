@@ -76,10 +76,12 @@ def register_callbacks(app):
         Output('map', 'figure'),
         Input('toggle-metric', 'value'),
         Input('map', 'hoverData'),
-        Input('num-months', 'value')
+        Input('num-months', 'value'),
+        Input('country-dropdown', 'value'),
+        Input('category-dropdown', 'value')
     )
-    def create_map(metric, hoverData, num_months):
-        country_sales = get_country_sales(num_months)
+    def create_map(metric, hoverData, num_months, selected_country, selected_category):
+        country_sales = get_country_sales(num_months, selected_country, selected_category)
         fig = px.choropleth(
             country_sales,
             locations='iso_alpha',
@@ -143,11 +145,19 @@ def register_callbacks(app):
 
     @app.callback(
         Output('monthly-retention', 'spec'),
-        Input('num-months', 'value')
+        Input('num-months', 'value'),
+        Input('country-dropdown', 'value'),
+        Input('category-dropdown', 'value')
     )
-    def update_monthly_retention(num_months):
-        filtered_retention = get_monthly_customer_retention(num_months)
+    def update_monthly_retention(num_months, selected_country, selected_category):
+        filtered_retention = get_monthly_customer_retention(num_months, selected_country, selected_category)
 
+        if filtered_retention.empty:
+            # Create a default DataFrame with zero values
+            filtered_retention = pd.DataFrame({
+                'Month': pd.date_range(end='2011-12', periods=num_months, freq='M').strftime('%Y-%m'),
+                'Count': [0] * num_months
+            })
         if isinstance(filtered_retention['Month'].iloc[0], pd.Period):
             filtered_retention['Month'] = filtered_retention['Month'].dt.strftime('%Y-%m')
         else:
@@ -171,11 +181,13 @@ def register_callbacks(app):
 
     @app.callback(
         Output('revenue-trends', 'spec'),
-        Input('num-months', 'value')
+        Input('num-months', 'value'),
+        Input('country-dropdown', 'value'),
+        Input('category-dropdown', 'value')
     )
 
-    def create_revenue_trends(num_months):
-        revenue_trends = get_revenue_trends(num_months)
+    def create_revenue_trends(num_months, selected_country, selected_category):
+        revenue_trends = get_revenue_trends(num_months, selected_country, selected_category)
 
         fig = alt.Chart(revenue_trends, width='container', height='container').mark_line(point=True, color="#488a99").encode(
             x=alt.X('Month:N', title='Date', axis=alt.Axis(labelAngle=45)),  # Format dates
@@ -200,10 +212,12 @@ def register_callbacks(app):
     @app.callback(
         Output('revenue-by-product', 'spec'),
         Input('toggle-metric', 'value'),
-        Input('num-months', 'value')
+        Input('num-months', 'value'),
+        Input('country-dropdown', 'value'),
+        Input('category-dropdown', 'value')
     )
-    def create_revenue_by_product(metric, num_months):
-        product_revenue = get_product_revenue(num_months)
+    def create_revenue_by_product(metric, num_months, selected_country, selected_category):
+        product_revenue = get_product_revenue(num_months, selected_country, selected_category)
         top_product_revenue = product_revenue.nlargest(10, 'Revenue')
     
         fig = alt.Chart(top_product_revenue, width='container', height='container').mark_bar(color="#488a99").encode(
@@ -226,12 +240,13 @@ def register_callbacks(app):
     
     @app.callback(
         Output("monthly-sales-bar-chart", "spec"),
-        [Input("country-dropdown", "value")],
-        Input('num-months', 'value')
+        Input('num-months', 'value'),
+        Input('country-dropdown', 'value'),
+        Input('category-dropdown', 'value')
     )
-    def update_monthly_sales_chart(selected_country, num_months):
+    def update_monthly_sales_chart(num_months, selected_country, selected_category):
         # Get filtered data from data.py
-        df_filtered = get_monthly_sales_data(num_months)
+        df_filtered = get_monthly_sales_data(num_months, selected_country, selected_category)
 
         # Create bar chart
         chart = alt.Chart(df_filtered, width='container', height='container').mark_bar(color="#488a99").encode(
