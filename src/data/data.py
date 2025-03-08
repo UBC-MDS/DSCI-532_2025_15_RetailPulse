@@ -38,8 +38,11 @@ def get_country_sales(no_months=6, selected_country='United Kingdom', selected_c
 
     return country_sales
 
-def get_revenue_trends(no_months=6):
+def get_revenue_trends(no_months=6, selected_country='United Kingdom', selected_category="Toys & Games"):
     my_df = filter_last_n_months(no_months)
+    my_df = my_df[my_df['Country'] == selected_country]
+    my_df = my_df[my_df['Category'] == selected_category]
+
     my_df['InvoiceDate'] = pd.to_datetime(my_df['InvoiceDate']) 
     my_df['Month'] = my_df['InvoiceDate'].dt.to_period('M').astype(str)
     
@@ -47,10 +50,12 @@ def get_revenue_trends(no_months=6):
     print(monthly_revenue)
     return monthly_revenue
 
-def get_monthly_customer_retention(no_months=6):
+def get_monthly_customer_retention(no_months=6, selected_country='United Kingdom', selected_category="Toys & Games"):
         
     # Customer Retention Metrics
     my_df = filter_last_n_months(no_months)
+    my_df = my_df[my_df['Country'] == selected_country]
+    my_df = my_df[my_df['Category'] == selected_category]
 
     my_df['Month'] = my_df['InvoiceDate'].dt.to_period('M')
     customer_months = my_df.groupby(['CustomerID', 'Month']).size().reset_index(name='Purchases')
@@ -71,8 +76,10 @@ def get_monthly_customer_retention(no_months=6):
 
     return monthly_retention
 
-def get_product_revenue(no_months=6):
+def get_product_revenue(no_months=6, selected_country='United Kingdom', selected_category="Toys & Games"):
     my_df = filter_last_n_months(no_months)
+    my_df = my_df[my_df['Country'] == selected_country]
+    my_df = my_df[my_df['Category'] == selected_category]
 
     my_df['Revenue'] = my_df['Quantity'] * my_df['UnitPrice']
     # Group by product and sum the revenue
@@ -95,9 +102,12 @@ def get_summary_metrics(no_months=6):
         "total_customers": total_customers
     }
   
-def get_monthly_sales_data(num_months):
+def get_monthly_sales_data(num_months, selected_country='United Kingdom', selected_category="Toys & Games"):
     """Returns the quantity sold per category for a given month."""
     my_df = filter_last_n_months(num_months)
+    my_df = my_df[my_df['Country'] == selected_country]
+    my_df = my_df[my_df['Category'] == selected_category]
+
     my_df['InvoiceDate'] = pd.to_datetime(my_df['InvoiceDate'])
     
     my_df['Month'] = my_df['InvoiceDate'].dt.strftime('%Y-%m') 
