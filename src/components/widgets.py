@@ -49,8 +49,9 @@ def category_dropdown():
             dcc.Dropdown(
                 id="category-dropdown",
                 options=[{"label": category, "value": category} for category in category_options],  
-                value="All", 
+                value=["All"], 
                 clearable=False,
+                multi = True,
                 style={"color": "black"} 
             )
         ]),
@@ -65,8 +66,9 @@ def country_dropdown():
             dcc.Dropdown(
                 id="country-dropdown",
                 options=[{"label": country, "value": country} for country in country_options],  # Corrected options
-                value="All", 
+                value=["All"], 
                 clearable=False,
+                multi = True,
                 style={"color": "black"}
             )
         ]),
