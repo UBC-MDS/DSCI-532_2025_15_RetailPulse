@@ -64,6 +64,11 @@ def register_callbacks(app):
         Input('category-dropdown', 'value')
     )
     def update_summary_metrics(num_months, selected_country, selected_category):
+        if not isinstance(selected_country, list):
+            selected_country = ["All"]
+        if not isinstance(selected_category, list):
+            selected_category = ["All"]
+
         # Fetch updated statistics based on user selections
         metrics = get_summary_metrics(num_months, selected_country, selected_category)
         
@@ -83,6 +88,11 @@ def register_callbacks(app):
         Input('category-dropdown', 'value')
     )
     def create_map(metric, hoverData, num_months, selected_country, selected_category):
+        if not isinstance(selected_country, list):
+            selected_country = ["All"]
+        if not isinstance(selected_category, list):
+            selected_category = ["All"]
+
         country_sales = get_country_sales(num_months, selected_country, selected_category)
         fig = px.choropleth(
             country_sales,
@@ -152,6 +162,11 @@ def register_callbacks(app):
         Input('category-dropdown', 'value')
     )
     def update_monthly_retention(num_months, selected_country, selected_category):
+        if not isinstance(selected_country, list):
+            selected_country = ["All"]
+        if not isinstance(selected_category, list):
+            selected_category = ["All"]
+
         filtered_retention = get_monthly_customer_retention(num_months, selected_country, selected_category)
 
         if filtered_retention.empty:
@@ -189,6 +204,11 @@ def register_callbacks(app):
     )
 
     def create_revenue_trends(num_months, selected_country, selected_category):
+        if not isinstance(selected_country, list):
+            selected_country = ["All"]
+        if not isinstance(selected_category, list):
+            selected_category = ["All"]
+
         revenue_trends = get_revenue_trends(num_months, selected_country, selected_category)
 
         fig = alt.Chart(revenue_trends, width='container', height='container').mark_line(point=True, color="#488a99").encode(
@@ -219,6 +239,11 @@ def register_callbacks(app):
         Input('category-dropdown', 'value')
     )
     def create_revenue_by_product(metric, num_months, selected_country, selected_category):
+        if not isinstance(selected_country, list):
+            selected_country = ["All"]
+        if not isinstance(selected_category, list):
+            selected_category = ["All"]
+            
         product_revenue = get_product_revenue(num_months, selected_country, selected_category)
         top_product_revenue = product_revenue.nlargest(10, 'Revenue')
     

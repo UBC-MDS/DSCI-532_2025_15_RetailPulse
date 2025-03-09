@@ -22,14 +22,14 @@ def filter_last_n_months(n_months):
     return df[df['InvoiceDate'] >= n_months_ago].copy()
 
 
-def get_country_sales(no_months=6, selected_country='All', selected_category="All"):
+def get_country_sales(no_months=6, selected_country=['All'], selected_category=["All"]):
     my_df = filter_last_n_months(no_months)
-    if selected_category != "All":
-        my_df = my_df[my_df["Category"] == selected_category]
+    if selected_category and "All" not in selected_category:
+        my_df = my_df[my_df["Category"].isin(selected_category)]
 
-    if selected_country != "All":
-        my_df = my_df[my_df["Country"] == selected_country]
-    
+    if selected_country and "All" not in selected_country:
+        my_df = my_df[my_df["Country"].isin(selected_country)]
+
     # Aggregate by country
     country_sales = my_df.groupby('Country', as_index=False).agg({'Revenue': 'sum', 'Quantity': 'sum'})
     
@@ -41,28 +41,29 @@ def get_country_sales(no_months=6, selected_country='All', selected_category="Al
 
     return country_sales
 
-def get_revenue_trends(no_months=6, selected_country="All", selected_category="All"):
+def get_revenue_trends(no_months=6, selected_country=["All"], selected_category=["All"]):
     my_df = filter_last_n_months(no_months)
 
-    if selected_category != "All":
-        my_df = my_df[my_df["Category"] == selected_category]
+    if selected_category and "All" not in selected_category:
+        my_df = my_df[my_df["Category"].isin(selected_category)]
 
-    if selected_country != "All":
-        my_df = my_df[my_df["Country"] == selected_country]
+    if selected_country and "All" not in selected_country:
+        my_df = my_df[my_df["Country"].isin(selected_country)]
 
     my_df['InvoiceDate'] = pd.to_datetime(my_df['InvoiceDate']) 
     my_df['Month'] = my_df['InvoiceDate'].dt.to_period('M').astype(str)
     monthly_revenue = my_df.groupby('Month', as_index=False)['Revenue'].sum()
     return monthly_revenue
 
-def get_monthly_customer_retention(no_months=6, selected_country="All", selected_category="All"):
+def get_monthly_customer_retention(no_months=6, selected_country=["All"], selected_category=["All"]):
     my_df = filter_last_n_months(no_months)
 
-    if selected_category != "All":
-        my_df = my_df[my_df["Category"] == selected_category]
 
-    if selected_country != "All":
-        my_df = my_df[my_df["Country"] == selected_country]
+    if selected_category and "All" not in selected_category:
+        my_df = my_df[my_df["Category"].isin(selected_category)]
+
+    if selected_country and "All" not in selected_country:
+        my_df = my_df[my_df["Country"].isin(selected_country)]
 
     my_df['Month'] = my_df['InvoiceDate'].dt.to_period('M')
     customer_months = my_df.groupby(['CustomerID', 'Month']).size().reset_index(name='Purchases')
@@ -83,14 +84,14 @@ def get_monthly_customer_retention(no_months=6, selected_country="All", selected
 
     return monthly_retention
 
-def get_product_revenue(no_months=6, selected_country="All", selected_category="All"):
+def get_product_revenue(no_months=6, selected_country=["All"], selected_category=["All"]):
     my_df = filter_last_n_months(no_months)
 
-    if selected_category != "All":
-        my_df = my_df[my_df["Category"] == selected_category]
+    if selected_category and "All" not in selected_category:
+        my_df = my_df[my_df["Category"].isin(selected_category)]
 
-    if selected_country != "All":
-        my_df = my_df[my_df["Country"] == selected_country]
+    if selected_country and "All" not in selected_country:
+        my_df = my_df[my_df["Country"].isin(selected_country)]
 
     my_df['Revenue'] = my_df['Quantity'] * my_df['UnitPrice']
     # Group by product and sum the revenue
@@ -98,20 +99,20 @@ def get_product_revenue(no_months=6, selected_country="All", selected_category="
     df_grouped = df_grouped.sort_values(by='Revenue', ascending=False)
     return df_grouped
 
-def get_summary_metrics(no_months=6, selected_country="All", selected_category="All"):
+def get_summary_metrics(no_months=6, selected_country=["All"], selected_category=["All"]):
     """Returns total revenue, total orders, and unique customers"""
 
     my_df = filter_last_n_months(no_months)
 
-    if selected_category != "All":
-        my_df = my_df[my_df["Category"] == selected_category]
+    if selected_category and "All" not in selected_category:
+        my_df = my_df[my_df["Category"].isin(selected_category)]
 
-    if selected_country != "All":
-        my_df = my_df[my_df["Country"] == selected_country]
+    if selected_country and "All" not in selected_country:
+        my_df = my_df[my_df["Country"].isin(selected_country)]
 
     total_revenue = my_df["Revenue"].sum()
     total_orders = my_df["Quantity"].sum()
-    total_customers = my_df["CustomerID"].nunique()  # Count unique customers
+    total_customers = my_df["CustomerID"].nunique() 
 
     return {
         "total_revenue": total_revenue,
@@ -119,15 +120,15 @@ def get_summary_metrics(no_months=6, selected_country="All", selected_category="
         "total_customers": total_customers
     }
   
-def get_monthly_sales_data(no_months=6, selected_country="All", selected_category="All"):
+def get_monthly_sales_data(no_months=6, selected_country=["All"], selected_category=["All"]):
     """Returns the quantity sold per category for a given month."""
     my_df = filter_last_n_months(no_months)
 
-    if selected_category != "All":
-        my_df = my_df[my_df["Category"] == selected_category]
+    if selected_category and "All" not in selected_category:
+        my_df = my_df[my_df["Category"].isin(selected_category)]
 
-    if selected_country != "All":
-        my_df = my_df[my_df["Country"] == selected_country]
+    if selected_country and "All" not in selected_country:
+        my_df = my_df[my_df["Country"].isin(selected_country)]
 
     my_df['InvoiceDate'] = pd.to_datetime(my_df['InvoiceDate'])
     my_df['Month'] = my_df['InvoiceDate'].dt.strftime('%Y-%m') 
