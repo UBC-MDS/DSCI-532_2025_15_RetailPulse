@@ -16,7 +16,9 @@ dependencies:
   - pip=22.3.1
   - openpyxl
   - narwhals>=1.14.2
+  - nltk=3.8.1  # Added for stopwords processing
   - pip:
     - werkzeug==2.0.3
     - dash-vega-components==0.11.0
     - dash-bootstrap-components
+    - sentence-transformers  # Added for BERT embeddings
