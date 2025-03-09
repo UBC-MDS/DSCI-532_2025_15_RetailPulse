@@ -48,8 +48,8 @@ def category_dropdown():
             html.H5("Select Category", className="card-title", style={"color": "white", "textAlign": "center"}),
             dcc.Dropdown(
                 id="category-dropdown",
-                options=[{"label": category, "value": category} for category in category_options],  # Corrected options
-                value=category_options[0], 
+                options=[{"label": category, "value": category} for category in category_options],  
+                value="All", 
                 clearable=False,
                 style={"color": "black"} 
             )
@@ -65,7 +65,7 @@ def country_dropdown():
             dcc.Dropdown(
                 id="country-dropdown",
                 options=[{"label": country, "value": country} for country in country_options],  # Corrected options
-                value=country_options[0], 
+                value="All", 
                 clearable=False,
                 style={"color": "black"}
             )
