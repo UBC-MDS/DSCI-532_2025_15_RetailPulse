@@ -34,7 +34,7 @@ def metric_toggle():
 def month_slider():
     return dbc.Card(
         dbc.CardBody([
-            html.H5("Select Number of Months", className="card-title", style={"color": "white", "textAlign": "center"}),
+            html.H5("View Data for Last N Months", className="card-title", style={"color": "white", "textAlign": "center"}),
             dcc.Slider(id='num-months', min=1, max=12, step=1, value=6, 
                        marks={i: {'label': str(i), 'style': {'color': 'white'}} for i in range(1, 13)})
         ]),
