@@ -59,11 +59,13 @@ def register_callbacks(app):
 
     @app.callback(
         Output("summary-metrics-container", "children"),
-        Input("num-months", "value")
+        Input("num-months", "value"),
+         Input('country-dropdown', 'value'),
+        Input('category-dropdown', 'value')
     )
-    def update_summary_metrics(num_months):
+    def update_summary_metrics(num_months, selected_country, selected_category):
         # Fetch updated statistics based on user selections
-        metrics = get_summary_metrics(num_months)
+        metrics = get_summary_metrics(num_months, selected_country, selected_category)
         
         return summary_metrics(
             metrics["total_revenue"],

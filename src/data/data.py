@@ -87,10 +87,18 @@ def get_product_revenue(no_months=6, selected_country='United Kingdom', selected
     df_grouped = df_grouped.sort_values(by='Revenue', ascending=False)
     return df_grouped
 
-def get_summary_metrics(no_months=6):
+def get_summary_metrics(no_months=6, selected_country=None, selected_category=None):
     """Returns total revenue, total orders, and unique customers"""
 
     my_df = filter_last_n_months(no_months)
+    
+    # Apply category filter if selected
+    if selected_category and selected_category != "All":
+        my_df = my_df[my_df["Category"] == selected_category]
+
+    # Apply country filter if selected
+    if selected_country and selected_country != "All":
+        my_df = my_df[my_df["Country"] == selected_country]
 
     total_revenue = my_df["Revenue"].sum()
     total_orders = my_df["Quantity"].sum()
