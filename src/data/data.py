@@ -2,7 +2,7 @@ import pandas as pd
 import plotly.express as px
 
 # Load sales data
-file_path = "../data/processed/sample.csv" 
+file_path = "data/processed/sample.csv" 
 
 df = pd.read_csv(file_path)
 df['Revenue'] = df['Quantity'] * df['UnitPrice']
