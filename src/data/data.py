@@ -52,7 +52,9 @@ def get_revenue_trends(no_months=6, selected_country=["All"], selected_category=
 
     my_df['InvoiceDate'] = pd.to_datetime(my_df['InvoiceDate']) 
     my_df['Month'] = my_df['InvoiceDate'].dt.to_period('M').astype(str)
-    monthly_revenue = my_df.groupby('Month', as_index=False)['Revenue'].sum()
+    # Aggregate both Revenue and Quantity per Month
+    monthly_revenue = my_df.groupby('Month', as_index=False).agg({'Revenue': 'sum', 'Quantity': 'sum'}) 
+    print(monthly_revenue)
     return monthly_revenue
 
 def get_monthly_customer_retention(no_months=6, selected_country=["All"], selected_category=["All"]):
@@ -95,7 +97,7 @@ def get_product_revenue(no_months=6, selected_country=["All"], selected_category
 
     my_df['Revenue'] = my_df['Quantity'] * my_df['UnitPrice']
     # Group by product and sum the revenue
-    df_grouped = my_df.groupby('Description', as_index=False)['Revenue'].sum()
+    df_grouped = my_df.groupby('Description', as_index=False).agg({'Revenue': 'sum', 'Quantity': 'sum'})
     df_grouped = df_grouped.sort_values(by='Revenue', ascending=False)
     return df_grouped
 
@@ -130,11 +132,17 @@ def get_monthly_sales_data(no_months=6, selected_country=["All"], selected_categ
     if selected_country and "All" not in selected_country:
         my_df = my_df[my_df["Country"].isin(selected_country)]
 
+    # Compute revenue
+    my_df['Revenue'] = my_df['Quantity'] * my_df['UnitPrice']  # Added Revenue column
+
     my_df['InvoiceDate'] = pd.to_datetime(my_df['InvoiceDate'])
     my_df['Month'] = my_df['InvoiceDate'].dt.strftime('%Y-%m') 
 
-    monthly_sales = my_df.groupby('Category', as_index=False)['Quantity'].sum()
-    monthly_sales = monthly_sales.sort_values(by="Quantity", ascending=False)
+    # Aggregate by Category: Sum both Quantity and Revenue
+    monthly_sales = my_df.groupby('Category', as_index=False).agg({'Quantity': 'sum', 'Revenue': 'sum'})  # Added Revenue to aggregation
+
+    # Sort by Revenue in descending order
+    monthly_sales = monthly_sales.sort_values(by="Revenue", ascending=False)
     
     return monthly_sales
 

@@ -198,12 +198,13 @@ def register_callbacks(app):
 
     @app.callback(
         Output('revenue-trends', 'spec'),
+        Input('toggle-metric', 'value'),
         Input('num-months', 'value'),
         Input('country-dropdown', 'value'),
         Input('category-dropdown', 'value')
     )
 
-    def create_revenue_trends(num_months, selected_country, selected_category):
+    def create_revenue_trends(metric, num_months, selected_country, selected_category):
         if not isinstance(selected_country, list):
             selected_country = ["All"]
         if not isinstance(selected_category, list):
@@ -212,21 +213,21 @@ def register_callbacks(app):
         revenue_trends = get_revenue_trends(num_months, selected_country, selected_category)
 
         fig = alt.Chart(revenue_trends, width='container', height='container').mark_line(point=True, color="#488a99").encode(
-            x=alt.X('Month:N', title='Date', axis=alt.Axis(labelAngle=45)),  # Format dates
-            y=alt.Y('Revenue:Q', title=None),
+            x=alt.X('Month:T', title='Date', axis=alt.Axis(format='%b %Y')),
+            y=alt.Y(f'{metric}:Q', title=metric),  # Dynamically update Y-axis
             tooltip=[
-                alt.Tooltip('Month:N', title='Date:'),
-                alt.Tooltip('Revenue:Q', title='Revenue ($):', format="$.2f") 
+                alt.Tooltip('InvoiceDate:T', title='Date:', format='%b %Y'),
+                alt.Tooltip(f'{metric}:Q', title=f'{metric} ($)' if metric == 'Revenue' else f'{metric}', format="$.2f" if metric == 'Revenue' else ",.0f")
             ]
         ).properties(
-            title='Monthly Revenue Trends'
+            title=f'Monthly {metric} Trends'  # Dynamically update title
         ).configure_axis(
             labelFontSize=12,
             titleFontSize=14
         ).configure_title(
             fontSize=16
         )
-        
+
         return fig.to_dict()
 
 
@@ -245,14 +246,14 @@ def register_callbacks(app):
             selected_category = ["All"]
             
         product_revenue = get_product_revenue(num_months, selected_country, selected_category)
-        top_product_revenue = product_revenue.nlargest(10, 'Revenue')
-    
+        top_product_revenue = product_revenue.nlargest(10, metric)
+        
         fig = alt.Chart(top_product_revenue, width='container', height='container').mark_bar(color="#488a99").encode(
-            x=alt.X('Revenue:Q', title='Revenue ($)'),
-            y=alt.Y('Description:N', sort='-x', title=None, axis=alt.Axis(labelAngle=0)),  # Sort by Revenue in descending order
+            x=alt.X(f"{metric}:Q", title=metric),
+            y=alt.Y("Description:N", sort="-x", title=None, axis=alt.Axis(labelAngle=0)), 
             tooltip=[
-                alt.Tooltip('Description', title='Quantity (#):'),
-                alt.Tooltip('Revenue:Q', title='Revenue ($):', format="$.2f") 
+                alt.Tooltip('Description', title='Product:'),
+                alt.Tooltip(f"{metric}:Q", title=f"{metric} ($)" if metric == 'Revenue' else metric, format="$.2f" if metric == 'Revenue' else ",.0f")
             ]
         ).configure_axis(
             labelFontSize=12,
@@ -260,28 +261,30 @@ def register_callbacks(app):
         ).configure_title(
             fontSize=16
         ).properties(
-            title='Revenue by Product'
+            title=f"{metric} by Product"
         )
         
-        return (fig.to_dict())
+        return fig.to_dict()
     
     @app.callback(
         Output("monthly-sales-bar-chart", "spec"),
+        Input('toggle-metric', 'value'),
         Input('num-months', 'value'),
         Input('country-dropdown', 'value'),
         Input('category-dropdown', 'value')
     )
-    def update_monthly_sales_chart(num_months, selected_country, selected_category):
+    def update_monthly_sales_chart(metric, num_months, selected_country, selected_category):
         # Get filtered data from data.py
         df_filtered = get_monthly_sales_data(num_months, selected_country, selected_category)
 
         # Create bar chart
+        # Create bar chart dynamically based on the selected metric
         chart = alt.Chart(df_filtered, width='container', height='container').mark_bar(color="#488a99").encode(
-            x=alt.X("Quantity", title="Quantity Sold"),
+            x=alt.X(f"{metric}:Q", title=metric),  # Updated dynamically
             y=alt.Y("Category", sort="-x", title=None),
             tooltip=[
-                alt.Tooltip('Quantity:Q', title='Quantity (#):'),
-                alt.Tooltip('Category', title='Category:') 
+                alt.Tooltip(f'{metric}:Q', title=f'{metric}'),
+                alt.Tooltip('Category', title='Category')
             ]
         ).configure_axis(
             labelFontSize=12,
@@ -289,7 +292,7 @@ def register_callbacks(app):
         ).configure_title(
             fontSize=16
         ).properties(
-            title=f"Quantity Sold per Category",
+            title=f"{metric} Sold per Category",
             background="white"
         )
 
