@@ -2,7 +2,7 @@ import pandas as pd
 import plotly.express as px
 
 # Load sales data
-file_path = "data/processed/sample.csv" 
+file_path = "../data/processed/sample.csv" 
 
 df = pd.read_csv(file_path)
 df['Revenue'] = df['Quantity'] * df['UnitPrice']
@@ -52,7 +52,9 @@ def get_revenue_trends(no_months=6, selected_country="All", selected_category="A
 
     my_df['InvoiceDate'] = pd.to_datetime(my_df['InvoiceDate']) 
     my_df['Month'] = my_df['InvoiceDate'].dt.to_period('M').astype(str)
-    monthly_revenue = my_df.groupby('Month', as_index=False)['Revenue'].sum()
+    # Aggregate both Revenue and Quantity per Month
+    monthly_revenue = my_df.groupby('Month', as_index=False).agg({'Revenue': 'sum', 'Quantity': 'sum'}) 
+    print(monthly_revenue)
     return monthly_revenue
 
 def get_monthly_customer_retention(no_months=6, selected_country="All", selected_category="All"):
@@ -94,7 +96,7 @@ def get_product_revenue(no_months=6, selected_country="All", selected_category="
 
     my_df['Revenue'] = my_df['Quantity'] * my_df['UnitPrice']
     # Group by product and sum the revenue
-    df_grouped = my_df.groupby('Description', as_index=False)['Revenue'].sum()
+    df_grouped = my_df.groupby('Description', as_index=False).agg({'Revenue': 'sum', 'Quantity': 'sum'})
     df_grouped = df_grouped.sort_values(by='Revenue', ascending=False)
     return df_grouped
 
@@ -120,7 +122,7 @@ def get_summary_metrics(no_months=6, selected_country="All", selected_category="
     }
   
 def get_monthly_sales_data(no_months=6, selected_country="All", selected_category="All"):
-    """Returns the quantity sold per category for a given month."""
+    """Returns the quantity sold and revenue per category for a given month."""
     my_df = filter_last_n_months(no_months)
 
     if selected_category != "All":
@@ -129,11 +131,17 @@ def get_monthly_sales_data(no_months=6, selected_country="All", selected_categor
     if selected_country != "All":
         my_df = my_df[my_df["Country"] == selected_country]
 
+    # Compute revenue
+    my_df['Revenue'] = my_df['Quantity'] * my_df['UnitPrice']  # Added Revenue column
+
     my_df['InvoiceDate'] = pd.to_datetime(my_df['InvoiceDate'])
     my_df['Month'] = my_df['InvoiceDate'].dt.strftime('%Y-%m') 
 
-    monthly_sales = my_df.groupby('Category', as_index=False)['Quantity'].sum()
-    monthly_sales = monthly_sales.sort_values(by="Quantity", ascending=False)
+    # Aggregate by Category: Sum both Quantity and Revenue
+    monthly_sales = my_df.groupby('Category', as_index=False).agg({'Quantity': 'sum', 'Revenue': 'sum'})  # Added Revenue to aggregation
+
+    # Sort by Revenue in descending order
+    monthly_sales = monthly_sales.sort_values(by="Revenue", ascending=False)
     
     return monthly_sales
 
