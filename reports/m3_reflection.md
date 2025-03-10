@@ -51,5 +51,5 @@ To address these limitations and further enhance the dashboard, we plan to:
 3. **Performance Optimization**: Optimize the dashboard's performance to handle larger datasets more efficiently.
 4. **Calendar Range Slider**: Revisit the implementation of a calendar range slider for more precise time-based filtering.
 
-### Reflection
+### Final comments
 In this milestone, we successfully implemented several new features and refined existing ones to improve the dashboard's functionality and user experience. The introduction of the sidebar, inspired by our peers, has significantly enhanced the dashboard's usability. While we faced some technical challenges, the adjustments we made have resulted in a more robust and interactive tool. We remain committed to continuous improvement and look forward to addressing the identified limitations in future iterations.
