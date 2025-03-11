@@ -140,7 +140,7 @@ def register_callbacks(app):
                 'Count': [0] * num_months
             })
         if isinstance(filtered_retention['Month'].iloc[0], pd.Period):
-            filtered_retention['Month'] = filtered_retention['Month'].dt.strftime('%Y-%m')
+            filtered_retention['Month'] = filtered_retention['Month'].dt.strftime('%b-%Y')
         else:
             filtered_retention['Month'] = filtered_retention['Month'].astype(str)
 
@@ -175,13 +175,18 @@ def register_callbacks(app):
             selected_category = ["All"]
 
         revenue_trends = get_revenue_trends(num_months, selected_country, selected_category)
+        revenue_trends['Month'] = pd.to_datetime(revenue_trends['Month'], format='%Y-%m')
+        print(revenue_trends)
+        revenue_trends['Month'] = revenue_trends['Month'].dt.strftime('%b %Y')
+        print(revenue_trends)
+
 
         fig = alt.Chart(revenue_trends, width='container', height='container').mark_line(point=True, color="#488a99").encode(
-            x=alt.X('Month:T', title='Date', axis=alt.Axis(format='%b %Y')),
-            y=alt.Y(f'{metric}:Q', title=metric),  # Dynamically update Y-axis
+            x=alt.X('Month:N', title='Date', sort=None, axis=alt.Axis(labelAngle=45)),
+            y=alt.Y(f'{metric}:Q', title=metric, sort=None),  # Dynamically update Y-axis
             tooltip=[
-                alt.Tooltip('InvoiceDate:T', title='Date:', format='%b %Y'),
-                alt.Tooltip(f'{metric}:Q', title=f'{metric} ($)' if metric == 'Revenue' else f'{metric}', format="$.2f" if metric == 'Revenue' else ",.0f")
+                alt.Tooltip('Month:N', title='Date:'),
+                alt.Tooltip(f'{metric}:Q', title=f'{metric} ($):' if metric == 'Revenue' else f'{metric}', format="$.2f" if metric == 'Revenue' else ",.0f")
             ]
         ).properties(
             title=f'Monthly {metric} Trends'  # Dynamically update title
