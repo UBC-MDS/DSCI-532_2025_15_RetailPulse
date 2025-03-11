@@ -16,44 +16,10 @@ from data.data import (
     get_summary_metrics 
 )
 
+from callbacks.summary_metric_helper import summary_metrics
+
+
 df = get_data()
-
-def summary_metrics(total_revenue, total_orders, total_customers):
-    return [dbc.Row(
-        [
-            dbc.Col(
-                dbc.Card(
-                    dbc.CardBody([
-                        html.H5("Total Revenue", className="card-title text-center"),
-                        html.H4(f"${total_revenue:,.0f}", className="card-text text-center"),
-                    ]),
-                    className="summary-card summary-card-primary"
-                ), width=4
-            ),
-
-            dbc.Col(
-                dbc.Card(
-                    dbc.CardBody([
-                        html.H5("Total Orders", className="card-title text-center"),
-                        html.H4(f"{total_orders:,}", className="card-text text-center"),
-                    ]),
-                    className="summary-card summary-card-success"
-                ), width=4
-            ),
-
-            dbc.Col(
-                dbc.Card(
-                    dbc.CardBody([
-                        html.H5("Total Customers", className="card-title text-center"),
-                        html.H4(f"{total_customers:,}", className="card-text text-center"),
-                    ]),
-                    className="summary-card summary-card-info"
-                ), width=4
-            ),
-        ],
-        justify="center",
-    )]
-
 
 def register_callbacks(app):
 
@@ -107,10 +73,8 @@ def register_callbacks(app):
 
         # Resize map
         fig.update_layout(
-            autosize=False,
-            margin=dict(l=0, r=0, b=0, t=30, pad=2, autoexpand=True),
-            width=1080,
-            height=350
+            autosize=True,
+            margin=dict(l=0, r=0, b=0, t=30, pad=2, autoexpand=True)
         )
 
         fig.update_geos(
@@ -176,7 +140,7 @@ def register_callbacks(app):
                 'Count': [0] * num_months
             })
         if isinstance(filtered_retention['Month'].iloc[0], pd.Period):
-            filtered_retention['Month'] = filtered_retention['Month'].dt.strftime('%Y-%m')
+            filtered_retention['Month'] = filtered_retention['Month'].dt.strftime('%b-%Y')
         else:
             filtered_retention['Month'] = filtered_retention['Month'].astype(str)
 
@@ -211,13 +175,18 @@ def register_callbacks(app):
             selected_category = ["All"]
 
         revenue_trends = get_revenue_trends(num_months, selected_country, selected_category)
+        revenue_trends['Month'] = pd.to_datetime(revenue_trends['Month'], format='%Y-%m')
+        print(revenue_trends)
+        revenue_trends['Month'] = revenue_trends['Month'].dt.strftime('%b %Y')
+        print(revenue_trends)
+
 
         fig = alt.Chart(revenue_trends, width='container', height='container').mark_line(point=True, color="#488a99").encode(
-            x=alt.X('Month:T', title='Date', axis=alt.Axis(format='%b %Y')),
-            y=alt.Y(f'{metric}:Q', title=metric),  # Dynamically update Y-axis
+            x=alt.X('Month:N', title='Date', sort=None, axis=alt.Axis(labelAngle=45)),
+            y=alt.Y(f'{metric}:Q', title=metric, sort=None),  # Dynamically update Y-axis
             tooltip=[
-                alt.Tooltip('InvoiceDate:T', title='Date:', format='%b %Y'),
-                alt.Tooltip(f'{metric}:Q', title=f'{metric} ($)' if metric == 'Revenue' else f'{metric}', format="$.2f" if metric == 'Revenue' else ",.0f")
+                alt.Tooltip('Month:N', title='Date:'),
+                alt.Tooltip(f'{metric}:Q', title=f'{metric} ($):' if metric == 'Revenue' else f'{metric}', format="$.2f" if metric == 'Revenue' else ",.0f")
             ]
         ).properties(
             title=f'Monthly {metric} Trends'  # Dynamically update title

@@ -41,6 +41,7 @@ def get_country_sales(no_months=6, selected_country=['All'], selected_category=[
 
     return country_sales
 
+
 def get_revenue_trends(no_months=6, selected_country=["All"], selected_category=["All"]):
     my_df = filter_last_n_months(no_months)
 
@@ -51,11 +52,16 @@ def get_revenue_trends(no_months=6, selected_country=["All"], selected_category=
         my_df = my_df[my_df["Country"].isin(selected_country)]
 
     my_df['InvoiceDate'] = pd.to_datetime(my_df['InvoiceDate']) 
-    my_df['Month'] = my_df['InvoiceDate'].dt.to_period('M').astype(str)
-    # Aggregate both Revenue and Quantity per Month
-    monthly_revenue = my_df.groupby('Month', as_index=False).agg({'Revenue': 'sum', 'Quantity': 'sum'}) 
+
+    my_df['Month'] = my_df['InvoiceDate'].dt.strftime('%Y-%m') 
+
+    my_df['Revenue'] = my_df['Quantity'] * my_df['UnitPrice']  
+    
+    monthly_revenue = my_df.groupby('Month')['Revenue', 'Quantity'].sum().reset_index()
+
     print(monthly_revenue)
     return monthly_revenue
+
 
 def get_monthly_customer_retention(no_months=6, selected_country=["All"], selected_category=["All"]):
     my_df = filter_last_n_months(no_months)
@@ -139,14 +145,11 @@ def get_monthly_sales_data(no_months=6, selected_country=["All"], selected_categ
     my_df['Month'] = my_df['InvoiceDate'].dt.strftime('%Y-%m') 
 
     # Aggregate by Category: Sum both Quantity and Revenue
-    monthly_sales = my_df.groupby('Category', as_index=False).agg({'Quantity': 'sum', 'Revenue': 'sum'})  # Added Revenue to aggregation
-
-    # Sort by Revenue in descending order
-    monthly_sales = monthly_sales.sort_values(by="Revenue", ascending=False)
+    monthly_sales = my_df.groupby('Category', as_index=False)['Revenue', 'Quantity'].sum()
+    monthly_sales = monthly_sales.sort_values(by="Quantity", ascending=False)
     
     return monthly_sales
-
-
+    
 def get_month_options():
     """Returns available months for the dropdown."""
     month_options = (
@@ -158,14 +161,11 @@ def get_month_options():
     
     return month_options
 
-
 def get_category_options():
     """Fetch unique categories from the dataset and add 'All'."""
     categories = df["Category"].unique().tolist()
     categories.sort()  
     return ["All"] + categories 
-
-
 
 def get_country_options():
     """Fetch unique countries from the dataset and add 'All'."""

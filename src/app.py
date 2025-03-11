@@ -22,36 +22,36 @@ server = app.server
 
 app.layout = dbc.Container(fluid=True, children=[
 
+   
     dbc.Row([
-        dbc.Col(sidebar(), width=3), 
+        # Sidebar Column (Left on large screens, Top on extra-small screens)
+        dbc.Col(sidebar(), lg=3, md=3, sm=12, xs=12, className="sidebar-column",
+                style={'min-height': '100vh'}), 
 
+        # Main Content Column
         dbc.Col([
+            # Summary Metrics
             dbc.Row([
                 dbc.Col(summary_metrics(), width=12, style={
                     'display': 'flex', 
-                    'flex-direction': 
-                    'column', 'height': '100%', 
+                    'flex-direction': 'column', 
+                    'height': '100%', 
                     'overflow': 'hidden',
-                    })
+                })
             ]),
+
+            # Map Card
             dbc.Row([
                 dbc.Col(map_card(), width=12)
             ]),
 
             dbc.Row([
-                dbc.Col([
-                    dbc.Row([
-                        dbc.Col(revenue_trends_card(), width=6),
-                        dbc.Col(customer_retention_card(), width=6)
-                    ]),
-
-                    dbc.Row([
-                        dbc.Col(product_revenue_card(), width=6),
-                        dbc.Col(monthly_sales_card(), width=6)
-                    ])
-                ], width=12)
-            ])
-        ], width=9, style={'padding-top': '10px'}) 
+                dbc.Col(revenue_trends_card(), lg=6, md=6, sm=6, xs=12, className="graph-card"),
+                dbc.Col(customer_retention_card(), lg=6, md=6, sm=6, xs=12, className="graph-card"),
+                dbc.Col(product_revenue_card(), lg=6, md=6, sm=6, xs=12, className="graph-card"),
+                dbc.Col(monthly_sales_card(), lg=6, md=6, sm=6, xs=12, className="graph-card"),
+            ], className="gx-3 gy-3") 
+        ], lg=9, md=9, sm=12, xs=12, style={'padding-top': '10px'}) 
     ], className="align-items-stretch"),
 ])
 
