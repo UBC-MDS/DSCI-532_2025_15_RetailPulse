@@ -16,44 +16,10 @@ from data.data import (
     get_summary_metrics 
 )
 
+from callbacks.summary_metric_helper import summary_metrics
+
+
 df = get_data()
-
-def summary_metrics(total_revenue, total_orders, total_customers):
-    return [dbc.Row(
-        [
-            dbc.Col(
-                dbc.Card(
-                    dbc.CardBody([
-                        html.H5("Total Revenue", className="card-title text-center"),
-                        html.H4(f"${total_revenue:,.0f}", className="card-text text-center"),
-                    ]),
-                    className="summary-card summary-card-primary"
-                ), width=4
-            ),
-
-            dbc.Col(
-                dbc.Card(
-                    dbc.CardBody([
-                        html.H5("Total Orders", className="card-title text-center"),
-                        html.H4(f"{total_orders:,}", className="card-text text-center"),
-                    ]),
-                    className="summary-card summary-card-success"
-                ), width=4
-            ),
-
-            dbc.Col(
-                dbc.Card(
-                    dbc.CardBody([
-                        html.H5("Total Customers", className="card-title text-center"),
-                        html.H4(f"{total_customers:,}", className="card-text text-center"),
-                    ]),
-                    className="summary-card summary-card-info"
-                ), width=4
-            ),
-        ],
-        justify="center",
-    )]
-
 
 def register_callbacks(app):
 
@@ -107,10 +73,8 @@ def register_callbacks(app):
 
         # Resize map
         fig.update_layout(
-            autosize=False,
-            margin=dict(l=0, r=0, b=0, t=30, pad=2, autoexpand=True),
-            width=1080,
-            height=350
+            autosize=True,
+            margin=dict(l=0, r=0, b=0, t=30, pad=2, autoexpand=True)
         )
 
         fig.update_geos(
