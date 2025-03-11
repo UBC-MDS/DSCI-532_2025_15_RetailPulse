@@ -145,7 +145,7 @@ def get_monthly_sales_data(no_months=6, selected_country=["All"], selected_categ
     my_df['Month'] = my_df['InvoiceDate'].dt.strftime('%Y-%m') 
 
     # Aggregate by Category: Sum both Quantity and Revenue
-    monthly_sales = my_df.groupby('Category', as_index=False)['Quantity'].sum()
+    monthly_sales = my_df.groupby('Category', as_index=False)['Revenue', 'Quantity'].sum()
     monthly_sales = monthly_sales.sort_values(by="Quantity", ascending=False)
     
     return monthly_sales
