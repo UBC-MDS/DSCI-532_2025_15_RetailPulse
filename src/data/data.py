@@ -10,19 +10,47 @@ df['InvoiceDate'] = pd.to_datetime(df['InvoiceDate'])
 
 # Extract Year and Month Name
 df['Month_Label'] = df['InvoiceDate'].dt.strftime('%Y - %B') 
-df['Month_Value'] = df['InvoiceDate'].dt.strftime('%Y-%m')  # Format: "YYYY-MM" (for filtering)
+df['Month_Value'] = df['InvoiceDate'].dt.strftime('%Y-%m') 
 
 
 def get_data():
+    """
+    Returns the dataset.
+    
+    Returns:
+        DataFrame: The full dataset.
+    """
     return df
 
+
 def filter_last_n_months(n_months):
+    """
+    Filters the dataset to include only the last `n_months` based on the `InvoiceDate` column.
+    
+    Args:
+        n_months (int): Number of months to filter.
+    
+    Returns:
+        DataFrame: Filtered dataset containing only the last `n_months` of data.
+    """
     latest_date = df['InvoiceDate'].max()
     n_months_ago = latest_date - pd.DateOffset(months=n_months)
     return df[df['InvoiceDate'] >= n_months_ago].copy()
 
 
 def get_country_sales(no_months=6, selected_country=['All'], selected_category=["All"]):
+    """
+    Computes total revenue and quantity sold per country within the 
+    specified period and category filters.
+    
+    Args:
+        no_months (int, optional): Number of months to filter. Defaults to 6.
+        selected_country (list, optional): List of selected countries. Defaults to ['All'].
+        selected_category (list, optional): List of selected categories. Defaults to ["All"].
+    
+    Returns:
+        DataFrame: Aggregated country sales data including revenue, quantity, and country ISO codes.
+    """
     my_df = filter_last_n_months(no_months)
     if selected_category and "All" not in selected_category:
         my_df = my_df[my_df["Category"].isin(selected_category)]
@@ -42,7 +70,18 @@ def get_country_sales(no_months=6, selected_country=['All'], selected_category=[
     return country_sales
 
 
-def get_revenue_trends(no_months=6, selected_country=["All"], selected_category=["All"]):
+def get_revenue_quantity_trends(no_months=6, selected_country=["All"], selected_category=["All"]):
+    """
+    Computes monthly revenue and quantity trends based on selected filters.
+    
+    Args:
+        no_months (int, optional): Number of months to filter. Defaults to 6.
+        selected_country (list, optional): List of selected countries. Defaults to ["All"].
+        selected_category (list, optional): List of selected categories. Defaults to ["All"].
+    
+    Returns:
+        DataFrame: Monthly revenue and quantity trends.
+    """
     my_df = filter_last_n_months(no_months)
 
     if selected_category and "All" not in selected_category:
@@ -59,11 +98,22 @@ def get_revenue_trends(no_months=6, selected_country=["All"], selected_category=
     
     monthly_revenue = my_df.groupby('Month')['Revenue', 'Quantity'].sum().reset_index()
 
-    print(monthly_revenue)
+    # print(monthly_revenue)
     return monthly_revenue
 
 
 def get_monthly_customer_retention(no_months=6, selected_country=["All"], selected_category=["All"]):
+    """
+    Calculates monthly customer retention based on repeat purchases.
+    
+    Args:
+        no_months (int, optional): Number of months to filter. Defaults to 6.
+        selected_country (list, optional): List of selected countries. Defaults to ["All"].
+        selected_category (list, optional): List of selected categories. Defaults to ["All"].
+    
+    Returns:
+        DataFrame: Customer retention per month.
+    """
     my_df = filter_last_n_months(no_months)
 
 
@@ -92,7 +142,21 @@ def get_monthly_customer_retention(no_months=6, selected_country=["All"], select
 
     return monthly_retention
 
-def get_product_revenue(no_months=6, selected_country=["All"], selected_category=["All"]):
+
+def get_product_revenue_quantity(no_months=6, selected_country=["All"], selected_category=["All"]):
+    """
+    Computes total revenue and quantity sold per product description 
+    within a specified period and filters.
+    
+    Args:
+        no_months (int, optional): Number of months to filter. Defaults to 6.
+        selected_country (list, optional): List of selected countries. Defaults to ["All"].
+        selected_category (list, optional): List of selected categories. Defaults to ["All"].
+    
+    Returns:
+        DataFrame: Aggregated revenue and quantity sold per product description, sorted by revenue.
+    """
+
     my_df = filter_last_n_months(no_months)
 
     if selected_category and "All" not in selected_category:
@@ -107,29 +171,19 @@ def get_product_revenue(no_months=6, selected_country=["All"], selected_category
     df_grouped = df_grouped.sort_values(by='Revenue', ascending=False)
     return df_grouped
 
-def get_summary_metrics(no_months=6, selected_country=["All"], selected_category=["All"]):
-    """Returns total revenue, total orders, and unique customers"""
 
-    my_df = filter_last_n_months(no_months)
-
-    if selected_category and "All" not in selected_category:
-        my_df = my_df[my_df["Category"].isin(selected_category)]
-
-    if selected_country and "All" not in selected_country:
-        my_df = my_df[my_df["Country"].isin(selected_country)]
-
-    total_revenue = my_df["Revenue"].sum()
-    total_orders = my_df["Quantity"].sum()
-    total_customers = my_df["CustomerID"].nunique() 
-
-    return {
-        "total_revenue": total_revenue,
-        "total_orders": total_orders,
-        "total_customers": total_customers
-    }
-  
 def get_monthly_sales_data(no_months=6, selected_country=["All"], selected_category=["All"]):
-    """Returns the quantity sold per category for a given month."""
+    """
+    Computes the total revenue and quantity sold per product category within the given timeframe.
+    
+    Args:
+        no_months (int, optional): Number of months to filter. Defaults to 6.
+        selected_country (list, optional): List of selected countries. Defaults to ["All"].
+        selected_category (list, optional): List of selected categories. Defaults to ["All"].
+    
+    Returns:
+        DataFrame: Monthly sales data aggregated by product category, sorted by quantity sold.
+    """
     my_df = filter_last_n_months(no_months)
 
     if selected_category and "All" not in selected_category:
@@ -150,8 +204,45 @@ def get_monthly_sales_data(no_months=6, selected_country=["All"], selected_categ
     
     return monthly_sales
     
+
+def get_summary_metrics(no_months=6, selected_country=["All"], selected_category=["All"]):
+    """
+    Computes summary metrics including total revenue, total orders, and unique customers 
+    within a specified period and filters.
+    
+    Args:
+        no_months (int, optional): Number of months to filter. Defaults to 6.
+        selected_country (list, optional): List of selected countries. Defaults to ["All"].
+        selected_category (list, optional): List of selected categories. Defaults to ["All"].
+    
+    Returns:
+        dict: Summary metrics including total revenue, total orders, and unique customers.
+    """
+
+    my_df = filter_last_n_months(no_months)
+
+    if selected_category and "All" not in selected_category:
+        my_df = my_df[my_df["Category"].isin(selected_category)]
+
+    if selected_country and "All" not in selected_country:
+        my_df = my_df[my_df["Country"].isin(selected_country)]
+
+    total_revenue = my_df["Revenue"].sum()
+    total_orders = my_df["Quantity"].sum()
+    total_customers = my_df["CustomerID"].nunique() 
+
+    return {
+        "total_revenue": total_revenue,
+        "total_orders": total_orders,
+        "total_customers": total_customers
+    }
+
+  
 def get_month_options():
-    """Returns available months for the dropdown."""
+    """
+    Returns 
+        list: available months for the dropdown.
+    """
     month_options = (
         df[['Month_Label', 'Month_Value']]
         .drop_duplicates()
@@ -162,13 +253,24 @@ def get_month_options():
     return month_options
 
 def get_category_options():
-    """Fetch unique categories from the dataset and add 'All'."""
+    """
+    Fetches unique product categories from the dataset and includes 'All' as an option.
+    
+    Returns:
+        list: List of unique product categories with 'All' included.
+    """
+     
     categories = df["Category"].unique().tolist()
     categories.sort()  
     return ["All"] + categories 
 
 def get_country_options():
-    """Fetch unique countries from the dataset and add 'All'."""
+    """
+    Fetches unique countries from the dataset and includes 'All' as an option.
+    
+    Returns:
+        list: List of unique countries with 'All' included.
+    """
     countries = df["Country"].unique().tolist()
     countries.sort()  
     return ["All"] + countries 

@@ -3,15 +3,14 @@ import altair as alt
 import plotly.express as px
 
 from dash import Input, Output
-import dash_html_components as html
-import dash_bootstrap_components as dbc
+
 
 from data.data import (
     get_monthly_customer_retention, 
-    get_revenue_trends,
+    get_revenue_quantity_trends,
     get_country_sales,
     get_data,
-    get_product_revenue,
+    get_product_revenue_quantity,
     get_monthly_sales_data,
     get_summary_metrics 
 )
@@ -22,6 +21,12 @@ from callbacks.summary_metric_helper import summary_metrics
 df = get_data()
 
 def register_callbacks(app):
+    """
+    Registers all Dash callbacks for dynamic updates in the dashboard.
+    
+    Args:
+        app (Dash): Dash application instance.
+    """
 
     @app.callback(
         Output("summary-metrics-container", "children"),
@@ -30,6 +35,18 @@ def register_callbacks(app):
         Input('category-dropdown', 'value')
     )
     def update_summary_metrics(num_months, selected_country, selected_category):
+        """
+        Updates the summary metrics displayed on the dashboard.
+        
+        Args:
+            num_months (int): Number of months to filter.
+            selected_country (list): Selected countries.
+            selected_category (list): Selected categories.
+        
+        Returns:
+            HTML components: Updated summary metrics.
+        """
+
         if not isinstance(selected_country, list):
             selected_country = ["All"]
         if not isinstance(selected_category, list):
@@ -54,6 +71,20 @@ def register_callbacks(app):
         Input('category-dropdown', 'value')
     )
     def create_map(metric, hoverData, num_months, selected_country, selected_category):
+        """
+        Creates a geographical sales (revenue/quantity) distribution map.
+        
+        Args:
+            metric (str): The metric to display (Revenue or Quantity).
+            hoverData (dict): Data of hovered region.
+            num_months (int): Number of months to filter.
+            selected_country (list): Selected countries.
+            selected_category (list): Selected categories.
+        
+        Returns:
+            plotly.figure: Choropleth map displaying sales data.
+        """
+
         if not isinstance(selected_country, list):
             selected_country = ["All"]
         if not isinstance(selected_category, list):
@@ -126,6 +157,18 @@ def register_callbacks(app):
         Input('category-dropdown', 'value')
     )
     def update_monthly_retention(num_months, selected_country, selected_category):
+        """
+        Updates the monthly customer retention chart.
+        
+        Args:
+            num_months (int): Number of months to filter.
+            selected_country (list): Selected countries.
+            selected_category (list): Selected categories.
+        
+        Returns:
+            dict: Altair chart JSON specification.
+        """
+
         if not isinstance(selected_country, list):
             selected_country = ["All"]
         if not isinstance(selected_category, list):
@@ -167,14 +210,26 @@ def register_callbacks(app):
         Input('country-dropdown', 'value'),
         Input('category-dropdown', 'value')
     )
+    def create_revenue_quantity_trends(metric, num_months, selected_country, selected_category):
+        """
+        Generates a line chart displaying revenue or quantity trends over time.
+        
+        Args:
+            metric (str): The selected metric (Revenue or Quantity).
+            num_months (int): Number of months to filter.
+            selected_country (list): Selected countries.
+            selected_category (list): Selected categories.
+        
+        Returns:
+            dict: Altair chart JSON specification.
+        """
 
-    def create_revenue_trends(metric, num_months, selected_country, selected_category):
         if not isinstance(selected_country, list):
             selected_country = ["All"]
         if not isinstance(selected_category, list):
             selected_category = ["All"]
 
-        revenue_trends = get_revenue_trends(num_months, selected_country, selected_category)
+        revenue_trends = get_revenue_quantity_trends(num_months, selected_country, selected_category)
         revenue_trends['Month'] = pd.to_datetime(revenue_trends['Month'], format='%Y-%m')
         print(revenue_trends)
         revenue_trends['Month'] = revenue_trends['Month'].dt.strftime('%b %Y')
@@ -200,7 +255,6 @@ def register_callbacks(app):
         return fig.to_dict()
 
 
-
     @app.callback(
         Output('revenue-by-product', 'spec'),
         Input('toggle-metric', 'value'),
@@ -208,13 +262,25 @@ def register_callbacks(app):
         Input('country-dropdown', 'value'),
         Input('category-dropdown', 'value')
     )
-    def create_revenue_by_product(metric, num_months, selected_country, selected_category):
+    def create_revenue_quantity_by_product(metric, num_months, selected_country, selected_category):
+        """
+        Generates a bar chart displaying revenue/quantity by product.
+        
+        Args:
+            metric (str): The selected metric (Revenue or Quantity).
+            num_months (int): Number of months to filter.
+            selected_country (list): Selected countries.
+            selected_category (list): Selected categories.
+        
+        Returns:
+            dict: Altair chart JSON specification.
+        """
         if not isinstance(selected_country, list):
             selected_country = ["All"]
         if not isinstance(selected_category, list):
             selected_category = ["All"]
             
-        product_revenue = get_product_revenue(num_months, selected_country, selected_category)
+        product_revenue = get_product_revenue_quantity(num_months, selected_country, selected_category)
         top_product_revenue = product_revenue.nlargest(10, metric)
         
         fig = alt.Chart(top_product_revenue, width='container', height='container').mark_bar(color="#488a99").encode(
@@ -235,6 +301,7 @@ def register_callbacks(app):
         
         return fig.to_dict()
     
+
     @app.callback(
         Output("monthly-sales-bar-chart", "spec"),
         Input('toggle-metric', 'value'),
@@ -243,10 +310,22 @@ def register_callbacks(app):
         Input('category-dropdown', 'value')
     )
     def update_monthly_sales_chart(metric, num_months, selected_country, selected_category):
+        """
+        Generates a bar chart displaying sales data (revenue/quantity) by category.
+        
+        Args:
+            metric (str): The selected metric (Revenue or Quantity).
+            num_months (int): Number of months to filter.
+            selected_country (list): Selected countries.
+            selected_category (list): Selected categories.
+        
+        Returns:
+            dict: Altair chart JSON specification.
+        """
+
         # Get filtered data from data.py
         df_filtered = get_monthly_sales_data(num_months, selected_country, selected_category)
 
-        # Create bar chart
         # Create bar chart dynamically based on the selected metric
         chart = alt.Chart(df_filtered, width='container', height='container').mark_bar(color="#488a99").encode(
             x=alt.X(f"{metric}:Q", title=metric),  # Updated dynamically
