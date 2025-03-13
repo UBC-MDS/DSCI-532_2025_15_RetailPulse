@@ -252,7 +252,6 @@ def get_month_options():
     
     return month_options
 
-
 def get_category_options():
     """
     Fetches unique product categories from the dataset and includes 'All' as an option.
@@ -264,7 +263,6 @@ def get_category_options():
     categories = df["Category"].unique().tolist()
     categories.sort()  
     return ["All"] + categories 
-
 
 def get_country_options():
     """
