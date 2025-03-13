@@ -2,6 +2,17 @@ import dash_html_components as html
 import dash_bootstrap_components as dbc
 
 def summary_metrics(total_revenue, total_orders, total_customers):
+    """
+    Generates summary metric cards displaying total revenue, total orders, and total customers.
+    
+    Args:
+        total_revenue (float): The total revenue amount.
+        total_orders (int): The total number of orders.
+        total_customers (int): The total number of unique customers.
+    
+    Returns:
+        list: Dash HTML components displaying summary metric cards.
+    """
     return [
         dbc.Row(
             [
