@@ -3,7 +3,8 @@ import altair as alt
 import plotly.express as px
 
 from dash import Input, Output
-
+from dash import callback_context
+from dash import ctx
 import sys
 import os
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
@@ -34,7 +35,7 @@ def register_callbacks(app):
     @app.callback(
         Output("summary-metrics-container", "children"),
         Input("num-months", "value"),
-         Input('country-dropdown', 'value'),
+        Input('country-dropdown', 'value'),
         Input('category-dropdown', 'value')
     )
     def update_summary_metrics(num_months, selected_country, selected_category):
@@ -233,9 +234,8 @@ def register_callbacks(app):
 
         revenue_trends = get_revenue_quantity_trends(num_months, selected_country, selected_category)
         revenue_trends['Month'] = pd.to_datetime(revenue_trends['Month'], format='%Y-%m')
-        print(revenue_trends)
         revenue_trends['Month'] = revenue_trends['Month'].dt.strftime('%b %Y')
-        print(revenue_trends)
+        # print(revenue_trends)
 
         if revenue_trends.empty:
             return alt.Chart(pd.DataFrame({"Month": [], "Count": []})).mark_text(
@@ -368,17 +368,30 @@ def register_callbacks(app):
     # Callback to prevent empty selection
     @app.callback(
         Output("country-dropdown", "value"),
+        Input("map", "clickData"),  
         Input("country-dropdown", "value"),
         prevent_initial_call=True
     )
-    def enforce_country_selection(selected_values):
-        if not selected_values:  # If empty, keep the last known selection
+    def enforce_country_selection(clickData, selected_values):
+        """
+        Updates country selection when a country is clicked on the map.
+        Ensures at least one country is always selected.
+        """
+        # If the map was clicked, update the country selection
+        if ctx.triggered_id == "map" and clickData:
+            clicked_country = clickData["points"][0]["hovertext"]  # Extract clicked country ISO
+            return [clicked_country]  # Set dropdown to clicked country
+
+        # If dropdown is empty, reset to "All"
+        if not selected_values:
             return ["All"]
-        
+
+        # Remove "All" if another country is selected
         if "All" in selected_values and len(selected_values) > 1:
             return [val for val in selected_values if val != "All"]
-        
-        return selected_values 
+
+        return selected_values
+
     
     # Callback to prevent empty selection
     @app.callback(
