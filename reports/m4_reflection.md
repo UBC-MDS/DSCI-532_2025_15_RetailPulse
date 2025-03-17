@@ -1,11 +1,15 @@
 ## Milestone 4 Reflection  
 
 ## Data Management & Performance Optimization  
-For this milestone, we improved data efficiency by converting the project’s dataset into Parquet format, significantly enhancing storage efficiency and retrieval speed. This transition supports scalability and ensures smooth dashboard performance, even with larger datasets. Additionally, we implemented caching for key functions to reduce redundant computations, improving responsiveness and overall runtime efficiency.  
+For this milestone, we improved data efficiency by converting the project’s dataset into Parquet format, significantly enhancing storage efficiency and retrieval speed. This transition supports scalability and ensures smooth dashboard performance, even with larger datasets. 
+We also increased the data sample size to improve the dashboard’s robustness while ensuring that it remains performant. However, we are not using the complete dataset due to computational constraints and rendering limitations, which could impact efficiency and user experience.  
+
+Additionally, we updated the environment  files and the `requirements.txt` file to reflect the new dependencies required for Render deployment, ensuring a smooth setup process for all contributors. 
+
+Finally, we implemented caching for key functions to reduce redundant computations, improving responsiveness and overall runtime efficiency.  
 
 ## Code Quality & Validation  
 To reinforce code reliability, we introduced tests. Callback tests were particularly challenging, so we prioritized adding a test for the summary statistics. Additionally, we included data function tests and provided test instructions in the README to facilitate future maintenance.  
-
 As part of this milestone, we also responded to the final peer review, ensuring all feedback was incorporated effectively.  
 
 ## Major Updates Since Milestone 3  
