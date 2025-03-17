@@ -15,4 +15,7 @@ werkzeug==2.0.3
 dash-vega-components==0.11.0
 dash-bootstrap-components==1.7.*
 gunicorn==21.2.*
+flask-caching
+pytest-dash
+selenium==3.141.0
 pyarrow==19.0.1
