@@ -47,6 +47,15 @@ conda activate retailpulse
 ```bash
 python src/app.py
 ```
+
+## **Running the Tests**
+```bash
+conda env create -f environment.yaml
+conda activate retailpulse
+pytest tests/*
+```
+
+
 ## **Support**
 
 For any issues regarding running the dashboard or feature requests, lease contuct the team using [GitHub Issues](https://github.com/UBC-MDS/DSCI-532_2025_15_RetailPulse/issues)
