@@ -1,28 +1,26 @@
 import pandas as pd
 import plotly.express as px
+from flask_caching import Cache
+from flask import Flask
+
+# Initialize a Flask app (required for Flask-Caching)
+flask_app = Flask(__name__)
+cache = Cache(flask_app, config={'CACHE_TYPE': 'simple', 'CACHE_DEFAULT_TIMEOUT': 300})
 
 # Load sales data
 file_path = "data/processed/processed_parquet.parquet" 
 
-df = pd.read_parquet(file_path, engine='pyarrow')
-df['Revenue'] = df['Quantity'] * df['UnitPrice']
-df['InvoiceDate'] = pd.to_datetime(df['InvoiceDate'])
-
-# Extract Year and Month Name
-df['Month_Label'] = df['InvoiceDate'].dt.strftime('%Y - %B') 
-df['Month_Value'] = df['InvoiceDate'].dt.strftime('%Y-%m') 
-
-
+@cache.memoize()
 def get_data():
-    """
-    Returns the dataset.
-    
-    Returns:
-        DataFrame: The full dataset.
-    """
+    """Loads dataset and caches it to avoid reloading"""
+    df = pd.read_parquet(file_path, engine='pyarrow')
+    df['Revenue'] = df['Quantity'] * df['UnitPrice']
+    df['InvoiceDate'] = pd.to_datetime(df['InvoiceDate'])
+    df['Month_Label'] = df['InvoiceDate'].dt.strftime('%Y - %B')
+    df['Month_Value'] = df['InvoiceDate'].dt.strftime('%Y-%m')
     return df
 
-
+@cache.memoize()
 def filter_last_n_months(n_months):
     """
     Filters the dataset to include only the last `n_months` based on the `InvoiceDate` column.
@@ -33,6 +31,7 @@ def filter_last_n_months(n_months):
     Returns:
         DataFrame: Filtered dataset containing only the last `n_months` of data.
     """
+    df = get_data()
     latest_date = df['InvoiceDate'].max()
     n_months_ago = latest_date - pd.DateOffset(months=n_months)
     return df[df['InvoiceDate'] >= n_months_ago].copy()
@@ -243,6 +242,7 @@ def get_month_options():
     Returns 
         list: available months for the dropdown.
     """
+    df = get_data()
     month_options = (
         df[['Month_Label', 'Month_Value']]
         .drop_duplicates()
@@ -259,7 +259,7 @@ def get_category_options():
     Returns:
         list: List of unique product categories with 'All' included.
     """
-     
+    df = get_data() 
     categories = df["Category"].unique().tolist()
     categories.sort()  
     return ["All"] + categories 
@@ -271,6 +271,7 @@ def get_country_options():
     Returns:
         list: List of unique countries with 'All' included.
     """
+    df = get_data()
     countries = df["Country"].unique().tolist()
     countries.sort()  
     return ["All"] + countries 
