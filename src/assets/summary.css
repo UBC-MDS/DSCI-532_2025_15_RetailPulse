@@ -23,15 +23,15 @@
 
 /* Border colors for each type */
 .summary-card-primary {
-    border: 3px solid blue;
+    border: 3px solid white;
 }
 
 .summary-card-success {
-    border: 3px solid green;
+    border: 3px solid white;
 }
 
 .summary-card-info {
-    border: 3px solid #0dcaf0;
+    border: 3px solid white;
 }
 
 .summary-card h5, .summary-card h4 {
