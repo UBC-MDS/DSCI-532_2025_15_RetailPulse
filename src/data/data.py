@@ -2,9 +2,9 @@ import pandas as pd
 import plotly.express as px
 
 # Load sales data
-file_path = "data/processed/sample.csv" 
+file_path = "data/processed/processed_parquet.parquet" 
 
-df = pd.read_csv(file_path)
+df = pd.read_parquet(file_path, engine='pyarrow')
 df['Revenue'] = df['Quantity'] * df['UnitPrice']
 df['InvoiceDate'] = pd.to_datetime(df['InvoiceDate'])
 
