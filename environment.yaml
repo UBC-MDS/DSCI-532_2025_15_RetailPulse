@@ -17,6 +17,8 @@ dependencies:
   - openpyxl
   - narwhals>=1.14.2
   - pyarrow==19.0.1
+  - flask-caching==1.11.1
+  - cachelib==0.13.0
   - pip:
     - werkzeug==2.0.3
     - dash-vega-components==0.11.0
