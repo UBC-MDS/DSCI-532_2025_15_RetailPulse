@@ -236,7 +236,7 @@ def get_summary_metrics(no_months=6, selected_country=["All"], selected_category
         "total_customers": total_customers
     }
 
-  
+@cache.memoize()
 def get_month_options():
     """
     Returns 
@@ -252,6 +252,7 @@ def get_month_options():
     
     return month_options
 
+@cache.memoize()
 def get_category_options():
     """
     Fetches unique product categories from the dataset and includes 'All' as an option.
@@ -264,6 +265,7 @@ def get_category_options():
     categories.sort()  
     return ["All"] + categories 
 
+@cache.memoize()
 def get_country_options():
     """
     Fetches unique countries from the dataset and includes 'All' as an option.
