@@ -4,6 +4,9 @@ import plotly.express as px
 
 from dash import Input, Output
 
+import sys
+import os
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
 from data.data import (
     get_monthly_customer_retention, 
@@ -345,3 +348,34 @@ def register_callbacks(app):
         )
 
         return chart.to_dict()
+    
+
+    # Callback to prevent empty selection
+    @app.callback(
+        Output("country-dropdown", "value"),
+        Input("country-dropdown", "value"),
+        prevent_initial_call=True
+    )
+    def enforce_country_selection(selected_values):
+        if not selected_values:  # If empty, keep the last known selection
+            return ["All"]
+        
+        if "All" in selected_values and len(selected_values) > 1:
+            return [val for val in selected_values if val != "All"]
+        
+        return selected_values 
+    
+    # Callback to prevent empty selection
+    @app.callback(
+        Output("category-dropdown", "value"),
+        Input("category-dropdown", "value"),
+        prevent_initial_call=True
+    )
+    def enforce_category_selection(selected_values):
+        if not selected_values:  # If empty, keep the last known selection
+            return ["All"]
+        
+        if "All" in selected_values and len(selected_values) > 1:
+            return [val for val in selected_values if val != "All"]
+
+        return selected_values 
