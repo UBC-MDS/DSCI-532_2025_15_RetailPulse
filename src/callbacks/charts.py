@@ -3,7 +3,6 @@ import altair as alt
 import plotly.express as px
 
 from dash import Input, Output
-from dash import callback_context
 from dash import ctx
 import sys
 import os

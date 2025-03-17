@@ -16,7 +16,7 @@ from components.monthly_sales_card import monthly_sales_card
 from components.sidebar import sidebar
 
 # Initialize Dash app
-app = dash.Dash(__name__, external_stylesheets=[dbc.themes.BOOTSTRAP])
+app = dash.Dash(__name__, external_stylesheets=[dbc.themes.BOOTSTRAP], title='Retail Pulse')
 server = app.server
 
 
