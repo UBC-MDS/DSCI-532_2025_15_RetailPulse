@@ -180,11 +180,10 @@ def register_callbacks(app):
         filtered_retention = get_monthly_customer_retention(num_months, selected_country, selected_category)
 
         if filtered_retention.empty:
-            # Create a default DataFrame with zero values
-            filtered_retention = pd.DataFrame({
-                'Month': pd.date_range(end='2011-12', periods=num_months, freq='M').strftime('%Y-%m'),
-                'Count': [0] * num_months
-            })
+            return alt.Chart(pd.DataFrame({"Month": [], "Count": []})).mark_text(
+                text="Please broaden filters", size=20
+            ).properties(title="No Data Available | Please broaden filters").to_dict()
+    
         if isinstance(filtered_retention['Month'].iloc[0], pd.Period):
             filtered_retention['Month'] = filtered_retention['Month'].dt.strftime('%b-%Y')
         else:
@@ -238,6 +237,11 @@ def register_callbacks(app):
         revenue_trends['Month'] = revenue_trends['Month'].dt.strftime('%b %Y')
         print(revenue_trends)
 
+        if revenue_trends.empty:
+            return alt.Chart(pd.DataFrame({"Month": [], "Count": []})).mark_text(
+                text="Please broaden filters", size=20
+            ).properties(title="No Data Available | Please broaden filters").to_dict()
+
 
         fig = alt.Chart(revenue_trends, width='container', height='container').mark_line(point=True, color="#488a99").encode(
             x=alt.X('Month:N', title='Date', sort=None, axis=alt.Axis(labelAngle=45)),
@@ -286,6 +290,12 @@ def register_callbacks(app):
         product_revenue = get_product_revenue_quantity(num_months, selected_country, selected_category)
         top_product_revenue = product_revenue.nlargest(10, metric)
         
+        if top_product_revenue.empty:
+            return alt.Chart(pd.DataFrame({"Month": [], "Count": []})).mark_text(
+                text="Please broaden filters", size=20
+            ).properties(title="No Data Available | Please broaden filters").to_dict()
+
+
         fig = alt.Chart(top_product_revenue, width='container', height='container').mark_bar(color="#488a99").encode(
             x=alt.X(f"{metric}:Q", title=metric),
             y=alt.Y("Description:N", sort="-x", title=None, axis=alt.Axis(labelAngle=0)), 
@@ -328,6 +338,11 @@ def register_callbacks(app):
 
         # Get filtered data from data.py
         df_filtered = get_monthly_sales_data(num_months, selected_country, selected_category)
+
+        if df_filtered.empty:
+            return alt.Chart(pd.DataFrame({"Month": [], "Count": []})).mark_text(
+                text="Please broaden filters", size=20
+            ).properties(title="No Data Available | Please broaden filters").to_dict()
 
         # Create bar chart dynamically based on the selected metric
         chart = alt.Chart(df_filtered, width='container', height='container').mark_bar(color="#488a99").encode(
