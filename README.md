@@ -17,7 +17,7 @@ This project uses data from the [Online Retail Dataset](https://archive.ics.uci.
 
 The dashboard provides an **intuitive interface** for exploring retail insights across multiple dimensions.  
 
-![Demo](img/m3.gif)  
+![Demo](img/m4.gif)  
 
 ## **🛠 Running the App Locally**  
 
