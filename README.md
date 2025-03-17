@@ -59,7 +59,7 @@ pytest tests/
 
 ## **💡 Support**
 
-For any issues regarding running the dashboard or feature requests, lease contuct the team using [GitHub Issues](https://github.com/UBC-MDS/DSCI-532_2025_15_RetailPulse/issues) 🛠️
+For any issues regarding running the dashboard or feature requests, please contact the team using [GitHub Issues](https://github.com/UBC-MDS/DSCI-532_2025_15_RetailPulse/issues) 🛠️
 
 ## **🤝 Contributing**
 
