@@ -18,5 +18,4 @@ gunicorn==21.2.*
 flask-caching
 pytest-dash
 selenium==3.141.0
-
-
+pyarrow==19.0.1
